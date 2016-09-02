@@ -11,8 +11,11 @@ import SpriteKit
 class HudLayer: SKNode, UIGestureRecognizerDelegate{
 
     //MARK: - Variables
+    let pathTopScore = String(NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]) + "/topScore.plist"
+    
     var lifeLabel: SKLabelNode!
     var scoreLabel: SKLabelNode!
+    var topScoreLabel: SKLabelNode!
     
     var textLabel: SKLabelNode!
     
@@ -310,6 +313,29 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                 self.addChild(self.score)
             }
             
+            if self.topScoreLabel == nil {
+                self.topScoreLabel = SKLabelNode(fontNamed: "DisposableDroid BB")
+                self.topScoreLabel.horizontalAlignmentMode = .Center
+                if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                    self.topScoreLabel.fontSize = 38
+                }
+                else {
+                    self.topScoreLabel.fontSize = 24
+                }
+                #if os(tvOS)
+                    self.topScoreLabel.fontSize = 65
+                #endif
+                self.topScoreLabel.fontColor = UIColor.whiteColor()
+                self.topScoreLabel.position = CGPoint(x: self.size.width * 1/2, y: self.size.height * 6/10)
+                self.topScoreLabel.zPosition = self.backgroundMenu.zPosition + 10
+            }
+            
+            self.topScoreLabel.text = "Top Score: \(Status.sharedInstance.getScore()) m"
+            
+            if self.topScoreLabel.parent == nil {
+                self.addChild(self.topScoreLabel)
+            }
+            
             if self.menuButton == nil {
                 texture = SKTexture(imageNamed: buttonMenuTextureName)
                 texture.filteringMode = .Nearest
@@ -528,6 +554,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         menuButton.removeFromParent()
         textLabel.removeFromParent()
         score.removeFromParent()
+        topScoreLabel.removeFromParent()
     }
     
     func removeMenuPause() {

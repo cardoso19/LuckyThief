@@ -70,7 +70,7 @@ class ArcherKnight: Enemy {
     }
     
     //MARK: - Shoot
-    func shoot() {
+    @objc func shoot() {
         
         let arrow = Arrow(texture: arrowTexture, color: .clear, size: CGSize(width: physicsSize.width * 1/10, height: physicsSize.height * 1/2), char: CharType.Enemy)
         arrow.position = CGPoint(x: self.position.x, y: self.position.y)

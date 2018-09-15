@@ -46,7 +46,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
     
     var selection: SKSpriteNode!
     
-    func swipedRight(sender:UISwipeGestureRecognizer){
+    @objc func swipedRight(sender:UISwipeGestureRecognizer){
         nextFocus()
     }
     

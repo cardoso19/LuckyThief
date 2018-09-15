@@ -195,7 +195,7 @@ class ParallaxNode: SKSpriteNode {
         removeFromParent()
     }
     
-    func update() {
+    @objc func update() {
         
         if isParallax {
             let nodes = getPilha()

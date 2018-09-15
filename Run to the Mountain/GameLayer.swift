@@ -209,7 +209,7 @@ class GameLayer: SKNode {
         
     }
     
-    func createKnight() {
+    @objc func createKnight() {
         
         let inimigo = Knight(texture: nil, color: .clear, size: objSize, sceneSize: size, mass: 100000,textures: [horseTextureName: horseTextures, knightTextureName: knightTextures])
         
@@ -218,7 +218,7 @@ class GameLayer: SKNode {
         
     }
     
-    func createArcherKnight() {
+    @objc func createArcherKnight() {
         
         let inimigo = ArcherKnight(texture: nil, color: .clear, size: objSize, sceneSize: size, mass: 100000, textures: [horseTextureName: horseTextures, archerKnightTextureName: archerKnightTextures])
         
@@ -244,7 +244,7 @@ class GameLayer: SKNode {
         
     }
     
-    func createEnemyWave() {
+    @objc func createEnemyWave() {
         
         let waveCount = Status.sharedInstance.currentWave()
         

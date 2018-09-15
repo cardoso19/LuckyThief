@@ -22,9 +22,9 @@ class Arrow: SKSpriteNode {
         super.init(texture: texture, color: color, size: size)
         
         textureOnGround = SKTexture(imageNamed: arrowGroundTextureName)
-        textureOnGround.filteringMode = .Nearest
+        textureOnGround.filteringMode = .nearest
         
-        physicsBody = SKPhysicsBody(rectangleOfSize: size)
+        physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody?.affectedByGravity = true
      
         selfDestruction()
@@ -63,17 +63,17 @@ class Arrow: SKSpriteNode {
         
         ativa = false
         
-        physicsBody?.dynamic = false
+        physicsBody?.isDynamic = false
         
         let xVel = Status.sharedInstance.velocidadeChao
         
         name = arrowDesativadaName
         
-        let move = SKAction.moveBy(CGVector(dx: xVel, dy: 0), duration: 1.0)
-        let forever = SKAction.repeatActionForever(move)
+        let move = SKAction.move(by: CGVector(dx: xVel, dy: 0), duration: 1.0)
+        let forever = SKAction.repeatForever(move)
         
         removeAllActions()
-        runAction(forever)
+        run(forever)
         selfDestruction()
         
     }
@@ -81,14 +81,14 @@ class Arrow: SKSpriteNode {
     //MARK: - Sel Destruction
     func selfDestruction() {
         
-        let wait = SKAction.waitForDuration(5)
+        let wait = SKAction.wait(forDuration: 5)
         
-        let block = SKAction.runBlock {
+        let block = SKAction.run {
             self.removeFromParent()
         }
         
         let sequence = SKAction.sequence([wait, block])
-        runAction(sequence)
+        run(sequence)
         
     }
     

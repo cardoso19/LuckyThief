@@ -55,7 +55,7 @@ class Enemy: SKSpriteNode {
         physicsBody?.collisionBitMask = PhysicsCategory.player
         physicsBody?.contactTestBitMask = PhysicsCategory.playerArrow | PhysicsCategory.player
         
-        physicsBody?.dynamic = true
+        physicsBody?.isDynamic = true
         
         createHorse()
         createPerson()
@@ -86,24 +86,24 @@ class Enemy: SKSpriteNode {
     
     func attack(player: Player) {
         
-        player.reciveDamage(self.attackDamage)
+        player.reciveDamage(hitDamage: self.attackDamage)
         
     }
     
     //MARK: - Create
     func createHorse() {
         
-        cavalo = SKSpriteNode(texture: nil, color: UIColor.clearColor(), size: CGSize(width: size.width, height: size.height))
+        cavalo = SKSpriteNode(texture: nil, color: .clear, size: CGSize(width: size.width, height: size.height))
         cavalo.position = CGPoint(x: 0, y: 0)
         cavalo.zPosition = playerZposition
         
-        let animate = SKAction.animateWithTextures(textures[horseTextureName]!, timePerFrame: 0.025)
+        let animate = SKAction.animate(with: textures[horseTextureName]!, timePerFrame: 0.025)
         
-        let forever = SKAction.repeatActionForever(animate)
+        let forever = SKAction.repeatForever(animate)
         
         self.addChild(cavalo)
         
-        cavalo.runAction(forever)
+        cavalo.run(forever)
         
     }
     
@@ -116,7 +116,7 @@ class Enemy: SKSpriteNode {
     //MARK: - Search For The Player
     func searchPlayer() {
         
-        if !paused {
+        if !isPaused {
             if !onPlayer {
                 physicsBody?.velocity = enemyVelocity
             }

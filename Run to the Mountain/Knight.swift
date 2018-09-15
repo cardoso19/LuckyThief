@@ -27,23 +27,23 @@ class Knight: Enemy {
     //MARK: - Create
     override func createPerson() {
         
-        person = SKSpriteNode(texture: nil, color: UIColor.clearColor(), size: CGSize(width: size.width, height: size.height))
+        person = SKSpriteNode(texture: nil, color: .clear, size: CGSize(width: size.width, height: size.height))
         person.position = CGPoint(x: 0, y: 0)
         person.zPosition = playerZposition + 50
         
-        let animate = SKAction.animateWithTextures(textures[knightTextureName]!, timePerFrame: 0.025)
+        let animate = SKAction.animate(with: textures[knightTextureName]!, timePerFrame: 0.025)
         
-        let forever = SKAction.repeatActionForever(animate)
+        let forever = SKAction.repeatForever(animate)
         
         self.addChild(person)
         
-        person.runAction(forever)
+        person.run(forever)
         
     }
     
     //MARK: - Attack
     override func attack(player: Player) {
-        super.attack(player)
+        super.attack(player: player)
         
         attackedPlayer()
     }
@@ -51,8 +51,8 @@ class Knight: Enemy {
     func attackedPlayer() {
         onPlayer = true
         
-        let wait = SKAction.waitForDuration(3)
-        let block = SKAction.runBlock { 
+        let wait = SKAction.wait(forDuration: 3)
+        let block = SKAction.run {
             
             self.onPlayer = false
             
@@ -60,13 +60,13 @@ class Knight: Enemy {
         
         let sequence = SKAction.sequence([wait, block])
         
-        runAction(sequence)
+        run(sequence)
     }
         
     //MARK: - Search For The Player
     override func searchPlayer() {
         
-        if !paused {
+        if !isPaused {
             if !onPlayer {
                 physicsBody?.velocity = enemyVelocity
             }

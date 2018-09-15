@@ -32,7 +32,7 @@ class Player: SKSpriteNode {
         physicsSize = size
         
         arrowTexture = SKTexture(imageNamed: arrowTextureName)
-        arrowTexture.filteringMode = .Nearest
+        arrowTexture.filteringMode = .nearest
         
         name = playerName
         
@@ -48,7 +48,7 @@ class Player: SKSpriteNode {
         physicsBody?.contactTestBitMask = PhysicsCategory.enemyArrow
         
         physicsBody?.allowsRotation = false
-        physicsBody?.dynamic = false
+        physicsBody?.isDynamic = false
         
         createHorse()
         createPerson()
@@ -62,12 +62,12 @@ class Player: SKSpriteNode {
         
         lifeLabel = SKLabelNode(fontNamed: "DisposableDroid BB")
         lifeLabel.text = "100%"
-        lifeLabel.horizontalAlignmentMode = .Center
+        lifeLabel.horizontalAlignmentMode = .center
         lifeLabel.fontSize = 12
         #if os(tvOS)
         lifeLabel.fontSize = 40
         #endif
-        lifeLabel.fontColor = UIColor.whiteColor()
+        lifeLabel.fontColor = .white
         lifeLabel.position = CGPoint(x: 0, y: physicsSize.height * 1/2)
         lifeLabel.zPosition = zPosition + 1
         
@@ -89,7 +89,7 @@ class Player: SKSpriteNode {
         
         print("Player Life: \(life)")
         
-        Status.sharedInstance.updateLifeOnHud(life)
+        Status.sharedInstance.updateLifeOnHud(currentLife: life)
         
     }
     
@@ -98,13 +98,13 @@ class Player: SKSpriteNode {
         
         if let gameLayer = self.parent {
             
-            let arrow = Arrow(texture: arrowTexture, color: UIColor.clearColor(), size: CGSize(width: physicsSize.width * 1/10, height: physicsSize.height * 1/2), char: CharType.Player)
+            let arrow = Arrow(texture: arrowTexture, color: .clear, size: CGSize(width: physicsSize.width * 1/10, height: physicsSize.height * 1/2), char: CharType.Player)
             arrow.position = CGPoint(x: self.position.x, y: self.position.y)
             
             gameLayer.addChild(arrow)
             
             arrow.physicsBody?.applyImpulse(velocity)
-            arrow.zRotation = atan2(velocity.dy, velocity.dx) + CGFloat(M_PI_2)
+            arrow.zRotation = atan2(velocity.dy, velocity.dx) + CGFloat(Double.pi/2)
             
         }
         
@@ -113,33 +113,33 @@ class Player: SKSpriteNode {
     //MARK: - Create
     func createHorse() {
         
-        cavalo = SKSpriteNode(texture: nil, color: UIColor.clearColor(), size: CGSize(width: size.width, height: size.height))
+        cavalo = SKSpriteNode(texture: nil, color: .clear, size: CGSize(width: size.width, height: size.height))
         cavalo.position = CGPoint(x: 0, y: 0)
         cavalo.zPosition = playerZposition
         
-        let animate = SKAction.animateWithTextures(textures[horseTextureName]!, timePerFrame: 0.025)
+        let animate = SKAction.animate(with: textures[horseTextureName]!, timePerFrame: 0.025)
         
-        let forever = SKAction.repeatActionForever(animate)
+        let forever = SKAction.repeatForever(animate)
         
         self.addChild(cavalo)
         
-        cavalo.runAction(forever)
+        cavalo.run(forever)
         
     }
     
     func createPerson() {
         
-        person = SKSpriteNode(texture: nil, color: UIColor.clearColor(), size: CGSize(width: size.width, height: size.height))
+        person = SKSpriteNode(texture: nil, color: .clear, size: CGSize(width: size.width, height: size.height))
         person.position = CGPoint(x: 0, y: 0)
         person.zPosition = playerZposition + 50
         
-        let animate = SKAction.animateWithTextures(textures[playerTextureName]!, timePerFrame: 0.025)
+        let animate = SKAction.animate(with: textures[playerTextureName]!, timePerFrame: 0.025)
         
-        let forever = SKAction.repeatActionForever(animate)
+        let forever = SKAction.repeatForever(animate)
         
         self.addChild(person)
         
-        person.runAction(forever)
+        person.run(forever)
         
     }
     

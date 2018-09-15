@@ -56,7 +56,7 @@ class GameLayer: SKNode {
         createGround()
         
         let actionScoring = Status.sharedInstance.startScoring()
-        runAction(actionScoring, withKey: actionScoreName)
+        run(actionScoring, withKey: actionScoreName)
         
     }
     
@@ -99,7 +99,7 @@ class GameLayer: SKNode {
             }
             
             if inimigo != nil {
-                inimigo.attack(player)
+                inimigo.attack(player: player)
             }
             
         } else if collision == PhysicsCategory.enemy | PhysicsCategory.playerArrow {
@@ -130,20 +130,20 @@ class GameLayer: SKNode {
                     
                     flecha.ativa = false
                     
-                    let vivo = inimigo.damage(flecha.damage)
+                    let vivo = inimigo.damage(hitDamage: flecha.damage)
                     
                     if vivo == 1 {
                         
-                        let enemiesAlive = Status.sharedInstance.decreaseEnemiesAlive(1)
+                        let enemiesAlive = Status.sharedInstance.decreaseEnemiesAlive(enemiesDead: 1)
                         
                         if enemiesAlive == 0 {
-                            let wait = SKAction.waitForDuration(1)
+                            let wait = SKAction.wait(forDuration: 1)
                             
-                            let perform = SKAction.performSelector(#selector(createEnemyWave), onTarget: self)
+                            let perform = SKAction.perform(#selector(createEnemyWave), onTarget: self)
                             
                             let sequence = SKAction.sequence([wait, perform])
                             
-                            runAction(sequence)
+                            run(sequence)
                         }
                         
                     }
@@ -172,7 +172,7 @@ class GameLayer: SKNode {
                 
                 flecha.ativa = false
                 
-                player.reciveDamage(flecha.damage)
+                player.reciveDamage(hitDamage: flecha.damage)
                 
                 flecha.removeFromParent()
             }
@@ -200,7 +200,7 @@ class GameLayer: SKNode {
     //MARK: - Creates
     func createPlayer() {
         
-        let jogador = Player(texture: nil, color: UIColor.clearColor(), size: objSize, mass: 0,textures: [horseTextureName: horseTextures, playerTextureName: playerTextures])
+        let jogador = Player(texture: nil, color: .clear, size: objSize, mass: 0,textures: [horseTextureName: horseTextures, playerTextureName: playerTextures])
         jogador.position = CGPoint(x: size.width * 1/8, y: size.height * 1/3)
         
         player = jogador
@@ -209,18 +209,18 @@ class GameLayer: SKNode {
         
     }
     
-    func createKnight() {
+    @objc func createKnight() {
         
-        let inimigo = Knight(texture: nil, color: UIColor.clearColor(), size: objSize, sceneSize: size, mass: 100000,textures: [horseTextureName: horseTextures, knightTextureName: knightTextures])
+        let inimigo = Knight(texture: nil, color: .clear, size: objSize, sceneSize: size, mass: 100000,textures: [horseTextureName: horseTextures, knightTextureName: knightTextures])
         
         
         addChild(inimigo)
         
     }
     
-    func createArcherKnight() {
+    @objc func createArcherKnight() {
         
-        let inimigo = ArcherKnight(texture: nil, color: UIColor.clearColor(), size: objSize, sceneSize: size, mass: 100000, textures: [horseTextureName: horseTextures, archerKnightTextureName: archerKnightTextures])
+        let inimigo = ArcherKnight(texture: nil, color: .clear, size: objSize, sceneSize: size, mass: 100000, textures: [horseTextureName: horseTextures, archerKnightTextureName: archerKnightTextures])
         
         addChild(inimigo)
         
@@ -228,10 +228,10 @@ class GameLayer: SKNode {
     
     func createGround() {
         
-        ground = SKSpriteNode(texture: nil, color: UIColor.clearColor(), size: CGSize(width: size.width * 2, height: size.height * 1/8))
+        ground = SKSpriteNode(texture: nil, color: .clear, size: CGSize(width: size.width * 2, height: size.height * 1/8))
         ground.position = CGPoint(x: 0, y: ground.size.height * 1/2)
         
-        ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
+        ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
         
         ground.physicsBody?.affectedByGravity = false
         
@@ -244,38 +244,38 @@ class GameLayer: SKNode {
         
     }
     
-    func createEnemyWave() {
+    @objc func createEnemyWave() {
         
         let waveCount = Status.sharedInstance.currentWave()
         
-        let knightCount = Int(waveCount * 2/3) + round(2/3)
+        let knightCount = Int(waveCount * 2/3) + Int(round(2/3))
         
-        let archerKnightCount = Int(waveCount * 1/3) + round(1/3)
+        let archerKnightCount = Int(waveCount * 1/3) + Int(round(1/3))
         
-        let wait = SKAction.waitForDuration(0.25)
+        let wait = SKAction.wait(forDuration: 0.25)
         
-        let performK = SKAction.performSelector(#selector(createKnight), onTarget: self)
+        let performK = SKAction.perform(#selector(createKnight), onTarget: self)
         
         let sequenceK = SKAction.sequence([wait, performK])
         
-        let repeatCountK = SKAction.repeatAction(sequenceK, count: knightCount)
+        let repeatCountK = SKAction.repeat(sequenceK, count: knightCount)
         
         if archerKnightCount > 0 {
-            let performAK = SKAction.performSelector(#selector(createArcherKnight), onTarget: self)
+            let performAK = SKAction.perform(#selector(createArcherKnight), onTarget: self)
             
             let sequenceAK = SKAction.sequence([wait, performAK])
             
-            let repeatCountAK = SKAction.repeatAction(sequenceAK, count: archerKnightCount)
+            let repeatCountAK = SKAction.repeat(sequenceAK, count: archerKnightCount)
             
             let sequenceFinal = SKAction.sequence([repeatCountK, repeatCountAK])
             
-            runAction(sequenceFinal)
+            run(sequenceFinal)
         }
         else {
-            runAction(repeatCountK)
+            run(repeatCountK)
         }
         
-        Status.sharedInstance.setEnemiesAlive(knightCount + archerKnightCount)
+        Status.sharedInstance.setEnemiesAlive(createdEnemies: knightCount + archerKnightCount)
         
         print("Enemies Created: \(knightCount + archerKnightCount)")
         print("Enemies Alive: \(Status.sharedInstance.currentEnemiesAlive())")
@@ -304,7 +304,7 @@ class GameLayer: SKNode {
         for index in 0...14 {
             
             let texture = SKTexture(imageNamed: horseTextureName + "\(index)")
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
             horseTextures.append(texture)
             
@@ -319,7 +319,7 @@ class GameLayer: SKNode {
         for index in 0...14 {
             
             let texture = SKTexture(imageNamed: knightTextureName + "\(index)")
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
             knightTextures.append(texture)
             
@@ -334,7 +334,7 @@ class GameLayer: SKNode {
         for index in 0...14 {
             
             let texture = SKTexture(imageNamed: archerKnightTextureName + "\(index)")
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
             archerKnightTextures.append(texture)
             
@@ -349,7 +349,7 @@ class GameLayer: SKNode {
         for index in 0...14 {
             
             let texture = SKTexture(imageNamed: playerTextureName + "\(index)")
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
             playerTextures.append(texture)
             
@@ -358,11 +358,11 @@ class GameLayer: SKNode {
     }
     
     //MARK: - Touchs
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         /* Called when a touch begins */
         
         for touch in touches {
-            let location = touch.locationInNode(self)
+            let location = touch.location(in: self)
 
             if Status.sharedInstance.statusJogo == GameState.OnGame {
                 firstPress = location
@@ -370,7 +370,7 @@ class GameLayer: SKNode {
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         /* Called when a touch begins */
         
         if Status.sharedInstance.statusJogo == GameState.OnGame {
@@ -380,21 +380,21 @@ class GameLayer: SKNode {
                         
                         var divisor: CGFloat = 0
                         
-                        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                    if UIDevice.current.userInterfaceIdiom == .pad {
                             divisor = 12
                         }
                         else {
                             divisor = 25
                         }
                         
-                        let location = touch.locationInNode(self)
+                    let location = touch.location(in: self)
                         
                         let xVel = (firstPress!.x - location.x) / divisor
                         let yVel = (firstPress!.y - location.y) / divisor
                         
                         let velocity = CGVector(dx: xVel, dy: yVel)
                         
-                        player.shoot(velocity)
+                    player.shoot(velocity: velocity)
                         
                     #elseif os(tvOS)
                         
@@ -421,23 +421,23 @@ class GameLayer: SKNode {
         /* Called before each frame is rendered */
         
         if Status.sharedInstance.statusJogo == GameState.OnGame {
-            enumerateChildNodesWithName(knightName) { (node, _) in
+            enumerateChildNodes(withName: knightName) { (node, _) in
                 
                 let inimigo = node as! Knight
                 inimigo.update()
                 
             }
             
-            enumerateChildNodesWithName(archerKnightName) { (node, _) in
+            enumerateChildNodes(withName: archerKnightName) { (node, _) in
                 
                 let inimigo = node as! ArcherKnight
                 inimigo.update()
                 
             }
             
-            enumerateChildNodesWithName(arrowName) { (node, _) in
+            enumerateChildNodes(withName: arrowName) { (node, _) in
                 
-                let angle = atan2(node.physicsBody!.velocity.dy, node.physicsBody!.velocity.dx) + CGFloat(M_PI_2)
+                let angle = atan2(node.physicsBody!.velocity.dy, node.physicsBody!.velocity.dx) + CGFloat(Double.pi/2)
                 node.zRotation = angle
                 
             }

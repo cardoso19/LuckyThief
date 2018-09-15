@@ -28,7 +28,7 @@ class ArcherKnight: Enemy {
         velocity = CGVector(dx: xFinal, dy: 0)
         
         arrowTexture = SKTexture(imageNamed: arrowTextureName)
-        arrowTexture.filteringMode = .Nearest
+        arrowTexture.filteringMode = .nearest
         
         name = archerKnightName
         
@@ -39,7 +39,7 @@ class ArcherKnight: Enemy {
     //MARK: - Search For The Player
     override func searchPlayer() {
         
-        if !paused {
+        if !isPaused {
             if position.x >= sceneSize.width * 3/4 {
                 physicsBody?.velocity = enemyVelocity
             }
@@ -50,15 +50,15 @@ class ArcherKnight: Enemy {
                     
                     shooting = true
                     
-                    let wait = SKAction.waitForDuration(1)
+                    let wait = SKAction.wait(forDuration: 1)
                     
-                    let perform = SKAction.performSelector(#selector(shoot), onTarget: self)
+                    let perform = SKAction.perform(#selector(shoot), onTarget: self)
                     
                     let sequence = SKAction.sequence([wait, perform])
                     
-                    let forever = SKAction.repeatActionForever(sequence)
+                    let forever = SKAction.repeatForever(sequence)
                     
-                    runAction(forever)
+                    run(forever)
                     
                 }
                 
@@ -70,9 +70,9 @@ class ArcherKnight: Enemy {
     }
     
     //MARK: - Shoot
-    func shoot() {
+    @objc func shoot() {
         
-        let arrow = Arrow(texture: arrowTexture, color: UIColor.clearColor(), size: CGSize(width: physicsSize.width * 1/10, height: physicsSize.height * 1/2), char: CharType.Enemy)
+        let arrow = Arrow(texture: arrowTexture, color: .clear, size: CGSize(width: physicsSize.width * 1/10, height: physicsSize.height * 1/2), char: CharType.Enemy)
         arrow.position = CGPoint(x: self.position.x, y: self.position.y)
         
         let gameLayer = self.parent
@@ -80,13 +80,13 @@ class ArcherKnight: Enemy {
         gameLayer!.addChild(arrow)
         
         #if os(iOS)
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             arrow.physicsBody?.applyImpulse(CGVector(dx: -32.5, dy: 32.5))
         }
         else {
             arrow.physicsBody?.applyImpulse(CGVector(dx: -5, dy: 5))
         }
-        arrow.zRotation = atan2(velocity.dy, velocity.dx) + CGFloat(M_PI_2)
+        arrow.zRotation = atan2(velocity.dy, velocity.dx) + CGFloat(Double.pi/2)
         #elseif os(tvOS)
         arrow.physicsBody?.applyImpulse(CGVector(dx: -100, dy: 100))
         arrow.zRotation = atan2(velocity.dy, velocity.dx) + CGFloat(M_PI_2)
@@ -96,17 +96,17 @@ class ArcherKnight: Enemy {
     //MARK: - Create
     override func createPerson() {
         
-        person = SKSpriteNode(texture: nil, color: UIColor.clearColor(), size: CGSize(width: size.width, height: size.height))
+        person = SKSpriteNode(texture: nil, color: .clear, size: CGSize(width: size.width, height: size.height))
         person.position = CGPoint(x: 0, y: 0)
         person.zPosition = playerZposition + 50
         
-        let animate = SKAction.animateWithTextures(textures[archerKnightTextureName]!, timePerFrame: 0.025)
+        let animate = SKAction.animate(with: textures[archerKnightTextureName]!, timePerFrame: 0.025)
         
-        let forever = SKAction.repeatActionForever(animate)
+        let forever = SKAction.repeatForever(animate)
         
         self.addChild(person)
         
-        person.runAction(forever)
+        person.run(forever)
         
     }
     

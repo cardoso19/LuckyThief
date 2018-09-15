@@ -18,15 +18,15 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
     //MARK:- Collision
     func didBeginContact(contact: SKPhysicsContact) {
         
-        gameLayerNode.didBeginContact(contact)
+        gameLayerNode.didBeginContact(contact: contact)
         
     }
     
     //MARK: - Game Stats
     func restartTheGame() {
         Status.sharedInstance.gamePaused = false
-        gameLayerNode.paused = !gameLayerNode.paused
-        backgroundLayerNode.paused = !backgroundLayerNode.paused
+        gameLayerNode.isPaused = !gameLayerNode.isPaused
+        backgroundLayerNode.isPaused = !backgroundLayerNode.isPaused
         physicsWorld.speed = 1.0
         
         Status.sharedInstance.restartGame()
@@ -44,11 +44,11 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func pauseGame() {
-        gameLayerNode.paused = !gameLayerNode.paused
-        backgroundLayerNode.paused = !backgroundLayerNode.paused
-        physicsWorld.speed = (gameLayerNode.paused == true ? 0.0 : 1.0)
+        gameLayerNode.isPaused = !gameLayerNode.isPaused
+        backgroundLayerNode.isPaused = !backgroundLayerNode.isPaused
+        physicsWorld.speed = (gameLayerNode.isPaused == true ? 0.0 : 1.0)
         
-        if gameLayerNode.paused {
+        if gameLayerNode.isPaused {
             Status.sharedInstance.gamePaused = true
             hudLayerNode.pause()
         }
@@ -60,9 +60,9 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
     
     func endGame() {
         Status.sharedInstance.gamePaused = false
-        gameLayerNode.paused = !gameLayerNode.paused
-        backgroundLayerNode.paused = !backgroundLayerNode.paused
-        physicsWorld.speed = (gameLayerNode.paused == true ? 0.0 : 1.0)
+        gameLayerNode.isPaused = !gameLayerNode.isPaused
+        backgroundLayerNode.isPaused = !backgroundLayerNode.isPaused
+        physicsWorld.speed = (gameLayerNode.isPaused == true ? 0.0 : 1.0)
         
         hudLayerNode.endGame()
     }
@@ -70,8 +70,8 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
     func goToMenu() {
         Status.sharedInstance.gamePaused = false
         physicsWorld.speed = 1.0
-        gameLayerNode.paused = !gameLayerNode.paused
-        backgroundLayerNode.paused = !backgroundLayerNode.paused
+        gameLayerNode.isPaused = !gameLayerNode.isPaused
+        backgroundLayerNode.isPaused = !backgroundLayerNode.isPaused
         
         Status.sharedInstance.restartGame()
         
@@ -131,7 +131,7 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
     }
     
     //MARK: - View
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         
         let camera = SKCameraNode()
         camera.position = CGPoint(x: size.width * 1/2, y: size.height * 1/2)
@@ -142,9 +142,9 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
         
         physicsWorld.contactDelegate = self
         #if os(iOS)
-        view.multipleTouchEnabled = false
-        view.exclusiveTouch = true
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        view.isMultipleTouchEnabled = false
+        view.isExclusiveTouch = true
+        if UIDevice.current.userInterfaceIdiom == .pad {
             physicsWorld.gravity = CGVector(dx: 0, dy: -15)
         }
             
@@ -182,42 +182,42 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
     }
     #endif
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
        /* Called when a touch begins */
     
         #if os(iOS)
-        let action = hudLayerNode.touch(touches, withEvent: event, paused: gameLayerNode.paused)
+        let action = hudLayerNode.touch(touches: touches, withEvent: event, paused: gameLayerNode.isPaused)
             
-        gameActionReceptor(action)
+        gameActionReceptor(action: action)
             
         #endif
         if Status.sharedInstance.statusJogo == GameState.OnGame {
-            gameLayerNode.touchesBegan(touches, withEvent: event)
+            gameLayerNode.touchesBegan(touches, with: event)
         }
         
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         /* Called when a touch begins */
         
         if Status.sharedInstance.statusJogo == GameState.OnGame {
-            gameLayerNode.touchesEnded(touches, withEvent: event)
+            gameLayerNode.touchesEnded(touches, with: event)
         }
         
     }
    
    //MARK: - Update
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
         if Status.sharedInstance.gamePaused == true {
-            gameLayerNode.paused = true
-            backgroundLayerNode.paused = true
+            gameLayerNode.isPaused = true
+            backgroundLayerNode.isPaused = true
         }
         
-        gameLayerNode.update(currentTime)
+        gameLayerNode.update(currentTime: currentTime)
         
-        backgroundLayerNode.update(currentTime)
+        backgroundLayerNode.update(currentTime: currentTime)
         
     }
     

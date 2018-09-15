@@ -11,7 +11,7 @@ import SpriteKit
 class HudLayer: SKNode, UIGestureRecognizerDelegate{
 
     //MARK: - Variables
-    let pathTopScore = String(NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]) + "/topScore.plist"
+    let pathTopScore = String(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]) + "/topScore.plist"
     
     var lifeLabel: SKLabelNode!
     var scoreLabel: SKLabelNode!
@@ -76,10 +76,10 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
     
     func added() {
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipedRight))
-        swipeRight.direction = .Right
+        swipeRight.direction = .right
         
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipedRight))
-        swipeLeft.direction = .Left
+        swipeLeft.direction = .left
         
 //        let scene = parent as! GameMountainScene
 //        scene.view!.addGestureRecognizer(swipeRight)
@@ -148,7 +148,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                 scoreLabel.fontSize = 80
             #endif
             scoreLabel.position = CGPoint(x: size.width * 1/2, y: size.height * 9/10)
-            scoreLabel.fontColor = UIColor.blackColor()
+            scoreLabel.fontColor = UIColor.black
         }
         scoreLabel.text = "0 m"
         
@@ -157,11 +157,11 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         }
         
         let texture = SKTexture(imageNamed: buttonPauseTextureName)
-        texture.filteringMode = .Nearest
+        texture.filteringMode = .nearest
         
         #if os(iOS)
         if pauseButton == nil {
-            pauseButton = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: CGSize(width: (size.width * 1/15) * 1.82, height: size.width * 1/15))
+            pauseButton = SKSpriteNode(texture: texture, color: .clear, size: CGSize(width: (size.width * 1/15) * 1.82, height: size.width * 1/15))
             pauseButton.position = CGPoint(x: size.width * 9/10, y: size.height * 9/10)
             pauseButton.name = pauseButtonName
         }
@@ -180,9 +180,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         if logoSprite == nil {
             
             texture = SKTexture(imageNamed: logoTextureName)
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
-            logoSprite = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: size)
+            logoSprite = SKSpriteNode(texture: texture, color: .clear, size: size)
             logoSprite.position = CGPoint(x: size.width * 1/2, y: size.height * 1/2)
             logoSprite.name = "Sprite Logo"
         }
@@ -194,9 +194,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         if playButton == nil {
             
             texture = SKTexture(imageNamed: playButtonTextureName)
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
-            playButton = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: CGSize(width: (size.width * 1/15) * 2.36, height: size.width * 1/15))
+            playButton = SKSpriteNode(texture: texture, color: .clear, size: CGSize(width: (size.width * 1/15) * 2.36, height: size.width * 1/15))
             playButton.position = CGPoint(x: size.width * 4/10, y: size.height * 1.5/10)
             playButton.name = playButtonName
         }
@@ -209,9 +209,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         if creditsButton == nil {
             
             texture = SKTexture(imageNamed: creditsButtonTextureName)
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
-            creditsButton = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: CGSize(width: (size.width * 1/15) * 2.36, height: size.width * 1/15))
+            creditsButton = SKSpriteNode(texture: texture, color: .clear, size: CGSize(width: (size.width * 1/15) * 2.36, height: size.width * 1/15))
             creditsButton.position = CGPoint(x: size.width * 2/10, y: size.height * 1.5/10)
             creditsButton.name = creditsButtonName
         }
@@ -233,9 +233,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         if blurBackground == nil {
             texture = SKTexture(imageNamed: blurBackgroundTextureName)
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
-            blurBackground = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: size)
+            blurBackground = SKSpriteNode(texture: texture, color: .clear, size: size)
             blurBackground.position = CGPoint(x: size.width * 1/2, y: size.height * 1/2)
             blurBackground.zPosition = 990
         }
@@ -246,7 +246,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         if backgroundMenu == nil {
             
-            backgroundMenu = SKSpriteNode(texture: nil, color: UIColor.clearColor(), size: size)
+            backgroundMenu = SKSpriteNode(texture: nil, color: .clear, size: size)
             backgroundMenu.position = CGPoint(x: size.width * 1/2, y: size.height * 1/2)
             backgroundMenu.zPosition = 1000
         }
@@ -259,18 +259,18 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         for index in 1...8 {
             texture = SKTexture(imageNamed: "\(backgroundPauseMenuTextureName)\(index)")
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
             textureArray.append(texture)
         }
         
-        let animation = SKAction.animateWithTextures(textureArray, timePerFrame: 0.03)
-        let block = SKAction.runBlock {
+        let animation = SKAction.animate(with: textureArray, timePerFrame: 0.03)
+        let block = SKAction.run {
             
             if self.textLabel == nil {
                 self.textLabel = SKLabelNode(fontNamed: "DisposableDroid BB")
-                self.textLabel.horizontalAlignmentMode = .Center
-                if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                self.textLabel.horizontalAlignmentMode = .center
+                if UIDevice.current.userInterfaceIdiom == .pad {
                     self.textLabel.fontSize = 52
                 }
                 else {
@@ -279,7 +279,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                 #if os(tvOS)
                 self.textLabel.fontSize = 80
                 #endif
-                self.textLabel.fontColor = UIColor.whiteColor()
+                self.textLabel.fontColor = .white
                 self.textLabel.position = CGPoint(x: self.size.width * 1/2, y: self.size.height * 8/10)
                 self.textLabel.zPosition = self.backgroundMenu.zPosition + 10
             }
@@ -292,8 +292,8 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             
             if self.score == nil {
                 self.score = SKLabelNode(fontNamed: "DisposableDroid BB")
-                self.score.horizontalAlignmentMode = .Center
-                if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                self.score.horizontalAlignmentMode = .center
+                if UIDevice.current.userInterfaceIdiom == .pad {
                     self.score.fontSize = 38
                 }
                 else {
@@ -302,7 +302,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                 #if os(tvOS)
                     self.score.fontSize = 65
                 #endif
-                self.score.fontColor = UIColor.whiteColor()
+                self.score.fontColor = .white
                 self.score.position = CGPoint(x: self.size.width * 1/2, y: self.size.height * 6.5/10)
                 self.score.zPosition = self.backgroundMenu.zPosition + 10
             }
@@ -315,8 +315,8 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             
             if self.topScoreLabel == nil {
                 self.topScoreLabel = SKLabelNode(fontNamed: "DisposableDroid BB")
-                self.topScoreLabel.horizontalAlignmentMode = .Center
-                if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                self.topScoreLabel.horizontalAlignmentMode = .center
+                if UIDevice.current.userInterfaceIdiom == .pad {
                     self.topScoreLabel.fontSize = 38
                 }
                 else {
@@ -325,7 +325,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                 #if os(tvOS)
                     self.topScoreLabel.fontSize = 65
                 #endif
-                self.topScoreLabel.fontColor = UIColor.whiteColor()
+                self.topScoreLabel.fontColor = .white
                 self.topScoreLabel.position = CGPoint(x: self.size.width * 1/2, y: self.size.height * 6/10)
                 self.topScoreLabel.zPosition = self.backgroundMenu.zPosition + 10
             }
@@ -338,9 +338,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             
             if self.menuButton == nil {
                 texture = SKTexture(imageNamed: buttonMenuTextureName)
-                texture.filteringMode = .Nearest
+                texture.filteringMode = .nearest
                 
-                self.menuButton = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: CGSize(width: self.size.width * 1/12, height: self.size.width * 1/12))
+                self.menuButton = SKSpriteNode(texture: texture, color: .clear, size: CGSize(width: self.size.width * 1/12, height: self.size.width * 1/12))
                 self.menuButton.position = CGPoint(x: self.size.width * 5.75/10, y: self.size.height * 4/10)
                 self.menuButton.name = restartButtonName
                 self.menuButton.zPosition = self.backgroundMenu.zPosition + 10
@@ -352,9 +352,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             
             if self.restartButton == nil {
                 texture = SKTexture(imageNamed: buttonRestartTextureName)
-                texture.filteringMode = .Nearest
+                texture.filteringMode = .nearest
                 
-                self.restartButton = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: CGSize(width: self.size.width * 1/12, height: self.size.width * 1/12))
+                self.restartButton = SKSpriteNode(texture: texture, color: .clear, size: CGSize(width: self.size.width * 1/12, height: self.size.width * 1/12))
                 self.restartButton.position = CGPoint(x: self.size.width * 4.25/10, y: self.size.height * 4/10)
                 self.restartButton.name = restartButtonName
                 self.restartButton.zPosition = self.backgroundMenu.zPosition + 10
@@ -372,7 +372,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         let sequence = SKAction.sequence([animation, block])
         
-        backgroundMenu.runAction(sequence)
+        backgroundMenu.run(sequence)
         
     }
     
@@ -382,9 +382,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         if blurBackground == nil {
             texture = SKTexture(imageNamed: blurBackgroundTextureName)
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
-            blurBackground = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: size)
+            blurBackground = SKSpriteNode(texture: texture, color: .clear, size: size)
             blurBackground.position = CGPoint(x: size.width * 1/2, y: size.height * 1/2)
             blurBackground.zPosition = 990
         }
@@ -395,7 +395,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         if backgroundMenu == nil {
             
-            backgroundMenu = SKSpriteNode(texture: nil, color: UIColor.clearColor(), size: size)
+            backgroundMenu = SKSpriteNode(texture: nil, color: .clear, size: size)
             backgroundMenu.position = CGPoint(x: size.width * 1/2, y: size.height * 1/2)
             backgroundMenu.zPosition = 1000
         }
@@ -408,18 +408,18 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         for index in 1...8 {
             texture = SKTexture(imageNamed: "\(backgroundPauseMenuTextureName)\(index)")
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
             textureArray.append(texture)
         }
         
-        let animation = SKAction.animateWithTextures(textureArray, timePerFrame: 0.03)
-        let block = SKAction.runBlock { 
+        let animation = SKAction.animate(with: textureArray, timePerFrame: 0.03)
+        let block = SKAction.run {
             
             if self.textLabel == nil {
                 self.textLabel = SKLabelNode(fontNamed: "DisposableDroid BB")
-                self.textLabel.horizontalAlignmentMode = .Center
-                if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                self.textLabel.horizontalAlignmentMode = .center
+                if UIDevice.current.userInterfaceIdiom == .pad {
                     self.textLabel.fontSize = 52
                 }
                 else {
@@ -428,7 +428,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                 #if os(tvOS)
                 self.textLabel.fontSize = 80
                 #endif
-                self.textLabel.fontColor = UIColor.whiteColor()
+                self.textLabel.fontColor = .white
                 self.textLabel.position = CGPoint(x: self.size.width * 1/2, y: self.size.height * 8/10)
                 self.textLabel.zPosition = self.backgroundMenu.zPosition + 10
             }
@@ -441,9 +441,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             
             if self.continueButton == nil {
                 texture = SKTexture(imageNamed: buttonContinueTextureName)
-                texture.filteringMode = .Nearest
+                texture.filteringMode = .nearest
                 
-                self.continueButton = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: CGSize(width: self.size.width * 1/12, height: self.size.width * 1/12))
+                self.continueButton = SKSpriteNode(texture: texture, color: .clear, size: CGSize(width: self.size.width * 1/12, height: self.size.width * 1/12))
                 self.continueButton.position = CGPoint(x: self.size.width * 1/2, y: self.size.height * 6/10)
                 self.continueButton.name = continueButtonName
                 self.continueButton.zPosition = self.backgroundMenu.zPosition + 10
@@ -456,9 +456,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             
             if self.menuButton == nil {
                 texture = SKTexture(imageNamed: buttonMenuTextureName)
-                texture.filteringMode = .Nearest
+                texture.filteringMode = .nearest
                 
-                self.menuButton = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: CGSize(width: self.size.width * 1/12, height: self.size.width * 1/12))
+                self.menuButton = SKSpriteNode(texture: texture, color: .clear, size: CGSize(width: self.size.width * 1/12, height: self.size.width * 1/12))
                 self.menuButton.position = CGPoint(x: self.size.width * 5.75/10, y: self.size.height * 4/10)
                 self.menuButton.name = restartButtonName
                 self.menuButton.zPosition = self.backgroundMenu.zPosition + 10
@@ -471,9 +471,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             
             if self.restartButton == nil {
                 texture = SKTexture(imageNamed: buttonRestartTextureName)
-                texture.filteringMode = .Nearest
+                texture.filteringMode = .nearest
                 
-                self.restartButton = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: CGSize(width: self.size.width * 1/12, height: self.size.width * 1/12))
+                self.restartButton = SKSpriteNode(texture: texture, color: .clear, size: CGSize(width: self.size.width * 1/12, height: self.size.width * 1/12))
                 self.restartButton.position = CGPoint(x: self.size.width * 4.25/10, y: self.size.height * 4/10)
                 self.restartButton.name = restartButtonName
                 self.restartButton.zPosition = self.backgroundMenu.zPosition + 10
@@ -492,7 +492,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         let sequence = SKAction.sequence([animation, block])
         
-        backgroundMenu.runAction(sequence)
+        backgroundMenu.run(sequence)
     
     }
     
@@ -502,9 +502,9 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         if blurBackground == nil {
             texture = SKTexture(imageNamed: blurBackgroundTextureName)
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
-            blurBackground = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: size)
+            blurBackground = SKSpriteNode(texture: texture, color: .clear, size: size)
             blurBackground.position = CGPoint(x: size.width * 1/2, y: size.height * 1/2)
             blurBackground.zPosition = 990
         }
@@ -515,7 +515,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         if backgroundMenu == nil {
             
-            backgroundMenu = SKSpriteNode(texture: nil, color: UIColor.clearColor(), size: size)
+            backgroundMenu = SKSpriteNode(texture: nil, color: .clear, size: size)
             backgroundMenu.position = CGPoint(x: size.width * 1/2, y: size.height * 1/2)
             backgroundMenu.zPosition = 1000
         }
@@ -528,14 +528,14 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         for index in 1...8 {
             texture = SKTexture(imageNamed: "\(backgroundCreditsMenuTextureName)\(index)")
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
             textureArray.append(texture)
         }
         
-        let animation = SKAction.animateWithTextures(textureArray, timePerFrame: 0.03)
+        let animation = SKAction.animate(with: textureArray, timePerFrame: 0.03)
         
-        backgroundMenu.runAction(animation)
+        backgroundMenu.run(animation)
         
     }
     
@@ -640,39 +640,39 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         /* Called when a touch begins */
         
         for touch in touches {
-            let location = touch.locationInNode(self)
+            let location = touch.location(in: self)
     
             #if os(tvOS)
     
             #elseif os(iOS)
             if Status.sharedInstance.statusJogo == GameState.OnGame {
-                if (pauseButtonName == scene?.nodeAtPoint(location).name) {
+                if (pauseButtonName == scene?.atPoint(location).name) {
                     createPauseMenu()
                     
                     return GameAction.Pause // Retorna um valor para pausar o jogo.
                 }
             }
             else if Status.sharedInstance.statusJogo == GameState.OnEndGameMenu {
-                if(restartButton == scene?.nodeAtPoint(location)) {
+                if(restartButton == scene?.atPoint(location)) {
                     
                     return GameAction.RestartGame // Retorna um valor para reiniciar o jogo.
                 }
-                else if(menuButton == scene?.nodeAtPoint(location)) {
+                else if(menuButton == scene?.atPoint(location)) {
                     
                     return GameAction.GoToMenu // Retorna um valor para voltar para o menu principal do jogo.
                 }
             }
             else if Status.sharedInstance.statusJogo == GameState.OnPauseMenu {
-                if (continueButton == scene?.nodeAtPoint(location)) {
+                if (continueButton == scene?.atPoint(location)) {
                     removeMenuPause()
                     
                     return GameAction.Resume // Retorna um valor para despausar o jogo.
                 }
-                else if(restartButton == scene?.nodeAtPoint(location)) {
+                else if(restartButton == scene?.atPoint(location)) {
                     
                     return GameAction.RestartGame // Retorna um valor para reiniciar o jogo.
                 }
-                else if(menuButton == scene?.nodeAtPoint(location)) {
+                else if(menuButton == scene?.atPoint(location)) {
                     
                     return GameAction.GoToMenu // Retorna um valor para voltar para o menu principal do jogo.
                 }
@@ -681,11 +681,11 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                 return  GameAction.BackToMenuInitial
             }
             else if Status.sharedInstance.statusJogo == GameState.OnInitialMenu{
-                if(playButton == scene?.nodeAtPoint(location)) {
+                if(playButton == scene?.atPoint(location)) {
                     
                     return GameAction.StartGame // Retorna um valor para iniciar o jogo.
                 }
-                else if(creditsButton == scene?.nodeAtPoint(location)) {
+                else if(creditsButton == scene?.atPoint(location)) {
                     
                     return GameAction.GoToCredits // Retorna um valor para inicia o menu de creditos
                 }
@@ -699,10 +699,10 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
     func press(presses: Set<UIPress>, withEvent event: UIPressesEvent?) -> Int {
         for press in presses {
             if Status.sharedInstance.statusJogo == GameState.OnInitialMenu {
-                if press.type == .Menu {
+                if press.type == .menu {
                     return GameAction.QuitGame
                 }
-                else if press.type == .Select {
+                else if press.type == .select {
                     let button = arrayBotoes[currentIndex]
                     
                     if button == playButton {
@@ -712,23 +712,23 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                         return GameAction.GoToCredits
                     }
                 }
-                else if press.type == .RightArrow {
+                else if press.type == .rightArrow {
                     nextFocus()
                 }
-                else if press.type == .LeftArrow {
+                else if press.type == .leftArrow {
                     previousFocus()
                 }
             }
             else if Status.sharedInstance.statusJogo == GameState.OnGame {
-                if press.type == .Menu {
+                if press.type == .menu {
                     return GameAction.Pause
                 }
             }
             else if Status.sharedInstance.statusJogo == GameState.OnPauseMenu {
-                if press.type == .Menu {
+                if press.type == .menu {
                     return GameAction.Resume
                 }
-                else if press.type == .Select {
+                else if press.type == .select {
                     let button = arrayBotoes[currentIndex]
                     
                     if button == continueButton {
@@ -741,18 +741,18 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                         return GameAction.GoToMenu
                     }
                 }
-                else if press.type == .RightArrow {
+                else if press.type == .rightArrow {
                     nextFocus()
                 }
-                else if press.type == .LeftArrow {
+                else if press.type == .leftArrow {
                     previousFocus()
                 }
             }
             else if Status.sharedInstance.statusJogo == GameState.OnEndGameMenu {
-                if press.type == .Menu {
+                if press.type == .menu {
                     return GameAction.GoToMenu
                 }
-                else if press.type == .Select {
+                else if press.type == .select {
                     let button = arrayBotoes[currentIndex]
                     
                     if button == restartButton {
@@ -762,18 +762,18 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                         return GameAction.GoToMenu
                     }
                 }
-                else if press.type == .RightArrow {
+                else if press.type == .rightArrow {
                     nextFocus()
                 }
-                else if press.type == .LeftArrow {
+                else if press.type == .leftArrow {
                     previousFocus()
                 }
             }
             else if Status.sharedInstance.statusJogo == GameState.OnCreditsMenu {
-                if press.type == .Menu {
+                if press.type == .menu {
                     return GameAction.BackToMenuInitial
                 }
-                else if press.type == .Select {
+                else if press.type == .select {
                     return GameAction.BackToMenuInitial
                 }
             }

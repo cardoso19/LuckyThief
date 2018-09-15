@@ -42,18 +42,18 @@ class ParallaxNode: SKSpriteNode {
         
         self.numNodes = numNodes - 1
         
-        super.init(texture: nil, color: UIColor.clearColor(), size: screenSize)
+        super.init(texture: nil, color: .clear, size: screenSize)
         
-        position = CGPointZero
+        position = CGPoint.zero
         
         loadTexture()
         
         if isParallax {
             if numNodes > 1 {
                 for index in 0...self.numNodes {
-                    let parallaxNode = SKSpriteNode(texture: arrayTextures[index], color: UIColor.clearColor(), size: texturesSize)
+                    let parallaxNode = SKSpriteNode(texture: arrayTextures[index], color: .clear, size: texturesSize)
                     
-                    parallaxNode.anchorPoint = CGPointZero
+                    parallaxNode.anchorPoint = CGPoint.zero
                     
                     if index != 0 {
                         let passado = fila[index - 1]
@@ -74,9 +74,9 @@ class ParallaxNode: SKSpriteNode {
             else {
                 for index in 0...3 {
                     
-                    let parallaxNode = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: texturesSize)
+                    let parallaxNode = SKSpriteNode(texture: texture, color: .clear, size: texturesSize)
                     
-                    parallaxNode.anchorPoint = CGPointZero
+                    parallaxNode.anchorPoint = CGPoint.zero
                     
                     if index != 0 {
                         let passado = fila[index - 1]
@@ -96,9 +96,9 @@ class ParallaxNode: SKSpriteNode {
             }
         }
         else {
-            let parallaxNode = SKSpriteNode(texture: texture, color: UIColor.clearColor(), size: texturesSize)
+            let parallaxNode = SKSpriteNode(texture: texture, color: .clear, size: texturesSize)
             
-            parallaxNode.anchorPoint = CGPointZero
+            parallaxNode.anchorPoint = CGPoint.zero
             
             parallaxNode.position = initialPosition
             
@@ -111,17 +111,17 @@ class ParallaxNode: SKSpriteNode {
         
         self.zPosition = zPosition
         
-        anchorPoint = CGPointZero
+        anchorPoint = CGPoint.zero
         
         if velocity > 0 {
-            let perform = SKAction.performSelector(#selector(update), onTarget: self)
-            let wait = SKAction.waitForDuration(0.1)
+            let perform = SKAction.perform(#selector(update), onTarget: self)
+            let wait = SKAction.wait(forDuration: 0.1)
             
             let sequence = SKAction.sequence([perform, wait])
             
-            let forever = SKAction.repeatActionForever(sequence)
+            let forever = SKAction.repeatForever(sequence)
             
-            runAction(forever)
+            run(forever)
         }
         
     }
@@ -130,7 +130,7 @@ class ParallaxNode: SKSpriteNode {
         if numNodes > 1 {
             for index in 0...numNodes {
                 let texture = SKTexture(imageNamed: "\(textureName)\(index)")
-                texture.filteringMode = .Nearest
+                texture.filteringMode = .nearest
                 arrayTextures.append(texture)
             }
         }
@@ -147,7 +147,7 @@ class ParallaxNode: SKSpriteNode {
         
         let primeiro = fila[0]
         
-        for (index, _) in fila.enumerate() {
+        for (index, _) in fila.enumerated() {
             if (index + 1) != fila.count {
                 fila[index] = fila[index + 1]
             }
@@ -165,18 +165,18 @@ class ParallaxNode: SKSpriteNode {
         
         if isParallax {
             
-            let move = SKAction.moveBy(CGVector(dx: velocity, dy: 0), duration: 1.0)
-            let forever = SKAction.repeatActionForever(move)
+            let move = SKAction.move(by: CGVector(dx: velocity, dy: 0), duration: 1.0)
+            let forever = SKAction.repeatForever(move)
             
             for node in fila {
-                node.runAction(forever)
+                node.run(forever)
             }
         }
         else if velocity > 0{
-            let move = SKAction.moveBy(CGVector(dx: velocity, dy: 0), duration: 1.0)
-            let notForever = SKAction.repeatActionForever(move)
+            let move = SKAction.move(by: CGVector(dx: velocity, dy: 0), duration: 1.0)
+            let notForever = SKAction.repeatForever(move)
             
-            runAction(notForever)
+            run(notForever)
         }
     }
     

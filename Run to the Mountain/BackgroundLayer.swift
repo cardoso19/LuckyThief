@@ -93,7 +93,7 @@ class BackgroundLayer: SKNode {
         var chaoArvoresTextureName = parallaxTextureNameChaoArvores
         var arvoresTextureName = parallaxTextureNameArvores
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             chaoTextureName += iPadAppendName
             casteloTextureName += iPadAppendName
             arbustoTextureName += iPadAppendName
@@ -104,34 +104,34 @@ class BackgroundLayer: SKNode {
         let sizeNode = CGSize(width: (size.height * 1/4) * 0.8888888889, height: size.height * 1/4)
         let positionNode = CGPoint(x: size.width, y: 0)
         
-        let chao = ParallaxNode(texture: nil, color: UIColor.clearColor(), texturesSize: sizeNode, numNodes: 12, zPosition: parallaxZpositionChao, initialPosition: positionNode, velocity: velocityFront, isParallax: true, screenSize: size, textureName: chaoTextureName)
+        let chao = ParallaxNode(texture: nil, color: .clear, texturesSize: sizeNode, numNodes: 12, zPosition: parallaxZpositionChao, initialPosition: positionNode, velocity: velocityFront, isParallax: true, screenSize: size, textureName: chaoTextureName)
         chao.name = "Chao"
         
         layers.append(chao)
         addChild(chao)
         
         var texture = SKTexture(imageNamed: casteloTextureName)
-        texture.filteringMode = .Nearest
+        texture.filteringMode = .nearest
         
-        let castelo = ParallaxNode(texture: texture, color: UIColor.clearColor(), texturesSize: size, numNodes: 1, zPosition: parallaxZpositionCastelo, initialPosition: CGPointZero, velocity: velocityArvore - 5, isParallax: false, screenSize: size, textureName: "")
+        let castelo = ParallaxNode(texture: texture, color: .clear, texturesSize: size, numNodes: 1, zPosition: parallaxZpositionCastelo, initialPosition: CGPoint.zero, velocity: velocityArvore - 5, isParallax: false, screenSize: size, textureName: "")
         castelo.name = "Castelo"
         
         layers.append(castelo)
         addChild(castelo)
         
         texture = SKTexture(imageNamed: arbustoTextureName)
-        texture.filteringMode = .Nearest
+        texture.filteringMode = .nearest
         
-        let arbusto = ParallaxNode(texture: texture, color: UIColor.clearColor(), texturesSize: size, numNodes: 1, zPosition: parallaxZpositionArbusto, initialPosition: positionNode, velocity: velocityFront, isParallax: true, screenSize: size, textureName: arbustoTextureName)
+        let arbusto = ParallaxNode(texture: texture, color: .clear, texturesSize: size, numNodes: 1, zPosition: parallaxZpositionArbusto, initialPosition: positionNode, velocity: velocityFront, isParallax: true, screenSize: size, textureName: arbustoTextureName)
         arbusto.name = "Arbusto"
         
         layers.append(arbusto)
         addChild(arbusto)
         
         texture = SKTexture(imageNamed: chaoArvoresTextureName)
-        texture.filteringMode = .Nearest
+        texture.filteringMode = .nearest
         
-        let chaoArvores = ParallaxNode(texture: texture, color: UIColor.clearColor(), texturesSize: size, numNodes: 1, zPosition: parallaxZpositionArvores - 10, initialPosition: CGPointZero, velocity: 0.0, isParallax: false, screenSize: size, textureName: chaoArvoresTextureName)
+        let chaoArvores = ParallaxNode(texture: texture, color: .clear, texturesSize: size, numNodes: 1, zPosition: parallaxZpositionArvores - 10, initialPosition: CGPoint.zero, velocity: 0.0, isParallax: false, screenSize: size, textureName: chaoArvoresTextureName)
         chaoArvores.name = "Chao Arvores"
         
         addChild(chaoArvores)
@@ -143,9 +143,9 @@ class BackgroundLayer: SKNode {
         createMontanhas()
         
         texture = SKTexture(imageNamed: parallaxTextureNameCeu)
-        texture.filteringMode = .Nearest
+        texture.filteringMode = .nearest
         
-        let ceu = ParallaxNode(texture: texture, color: UIColor.clearColor(), texturesSize: size, numNodes: 1, zPosition: parallaxZpositionCeu, initialPosition: CGPointZero, velocity: 0.0, isParallax: false, screenSize: size, textureName: parallaxTextureNameCeu)
+        let ceu = ParallaxNode(texture: texture, color: .clear, texturesSize: size, numNodes: 1, zPosition: parallaxZpositionCeu, initialPosition: CGPoint.zero, velocity: 0.0, isParallax: false, screenSize: size, textureName: parallaxTextureNameCeu)
         ceu.name = "Ceu"
         
         addChild(ceu)
@@ -160,9 +160,9 @@ class BackgroundLayer: SKNode {
         for index in 0...2 {
             
             texture = SKTexture(imageNamed: "\(parallaxTextureNameArvores)\(index)")
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
-            let arvore = ParallaxNode(texture: texture, color: UIColor.clearColor(), texturesSize: size, numNodes: 1, zPosition: parallaxZpositionArvores - CGFloat(index), initialPosition: CGPointZero, velocity: arvVelocity, isParallax: true, screenSize: size, textureName: parallaxTextureNameArvores)
+            let arvore = ParallaxNode(texture: texture, color: .clear, texturesSize: size, numNodes: 1, zPosition: parallaxZpositionArvores - CGFloat(index), initialPosition: CGPoint.zero, velocity: arvVelocity, isParallax: true, screenSize: size, textureName: parallaxTextureNameArvores)
             arvore.name = "Arvore \(index)"
             
             #if os(iOS)
@@ -183,7 +183,7 @@ class BackgroundLayer: SKNode {
         
         var isPad = false
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             isPad = true
         }
         
@@ -193,9 +193,9 @@ class BackgroundLayer: SKNode {
         for index in 0...2 {
             
             texture = SKTexture(imageNamed: "\(montanhasTextureName)\(index)")
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
-            let montanha = ParallaxNode(texture: texture, color: UIColor.clearColor(), texturesSize: size, numNodes: 1, zPosition: parallaxZpositionMontanhas - CGFloat(index), initialPosition: CGPointZero, velocity: monVelocity, isParallax: true, screenSize: size, textureName: parallaxTextureNameArvores)
+            let montanha = ParallaxNode(texture: texture, color: .clear, texturesSize: size, numNodes: 1, zPosition: parallaxZpositionMontanhas - CGFloat(index), initialPosition: CGPoint.zero, velocity: monVelocity, isParallax: true, screenSize: size, textureName: parallaxTextureNameArvores)
             montanha.name = "Montanha \(index)"
             
             layers.append(montanha)
@@ -230,9 +230,9 @@ class BackgroundLayer: SKNode {
             let position = CGPoint(x: x, y: y)
             
             texture = SKTexture(imageNamed: "\(parallaxTextureNameNuvens)0")
-            texture.filteringMode = .Nearest
+            texture.filteringMode = .nearest
             
-            let nuvem = ParallaxNode(texture: texture, color: UIColor.clearColor(), texturesSize: textureSize, numNodes: 1, zPosition: parallaxZpositionNuvens + CGFloat(index), initialPosition: position, velocity: numVelocity, isParallax: true, screenSize: size, textureName: parallaxTextureNameNuvens)
+            let nuvem = ParallaxNode(texture: texture, color: .clear, texturesSize: textureSize, numNodes: 1, zPosition: parallaxZpositionNuvens + CGFloat(index), initialPosition: position, velocity: numVelocity, isParallax: true, screenSize: size, textureName: parallaxTextureNameNuvens)
             nuvem.name = "Nuvem \(index)"
             print(nuvem.name)
             

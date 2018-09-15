@@ -39,17 +39,17 @@ class Status {
     
     func startScoring() -> SKAction{
         
-        let wait = SKAction.waitForDuration(0.25)
+        let wait = SKAction.wait(forDuration: 0.25)
         
-        let block = SKAction.runBlock { 
+        let block = SKAction.run { 
             
-            self.addScore(1)
+            self.addScore(addScore: 1)
             
         }
         
         let sequence = SKAction.sequence([wait, block])
         
-        let forever = SKAction.repeatActionForever(sequence)
+        let forever = SKAction.repeatForever(sequence)
         
         return forever
         
@@ -57,7 +57,7 @@ class Status {
     
     func stopScoring() {
         
-        gameLayerNode.removeActionForKey(actionScoreName)
+        gameLayerNode.removeAction(forKey: actionScoreName)
         
     }
     
@@ -123,7 +123,7 @@ class Status {
         
         if currentLife <= 0 {
             
-            gamescene.gameActionReceptor(GameAction.EndGame)
+            gamescene.gameActionReceptor(action: GameAction.EndGame)
             
         }
         

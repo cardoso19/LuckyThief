@@ -40,7 +40,7 @@ class BackgroundLayer: SKNode {
             velocityMontanha *= 2
         #endif
         
-        Status.sharedInstance.velocidadeChao = velocityFront
+        Status.shared.velocidadeChao = velocityFront
         
         goToMenu()
         

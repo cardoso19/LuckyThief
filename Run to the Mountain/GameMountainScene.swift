@@ -17,12 +17,12 @@ class GameMountainScene: SKScene {
     
     //MARK: - Game Stats
     func restartTheGame() {
-        Status.sharedInstance.gamePaused = false
+        Status.shared.gamePaused = false
         gameLayerNode.isPaused = !gameLayerNode.isPaused
         backgroundLayerNode.isPaused = !backgroundLayerNode.isPaused
         physicsWorld.speed = 1.0
         
-        Status.sharedInstance.restartGame()
+        Status.shared.restartGame()
         
         backgroundLayerNode.restartGame()
         hudLayerNode.restartGame()
@@ -42,17 +42,17 @@ class GameMountainScene: SKScene {
         physicsWorld.speed = (gameLayerNode.isPaused == true ? 0.0 : 1.0)
         
         if gameLayerNode.isPaused {
-            Status.sharedInstance.gamePaused = true
+            Status.shared.gamePaused = true
             hudLayerNode.pause()
         }
         else {
-            Status.sharedInstance.gamePaused = false
+            Status.shared.gamePaused = false
             hudLayerNode.resume()
         }
     }
     
     func endGame() {
-        Status.sharedInstance.gamePaused = false
+        Status.shared.gamePaused = false
         gameLayerNode.isPaused = !gameLayerNode.isPaused
         backgroundLayerNode.isPaused = !backgroundLayerNode.isPaused
         physicsWorld.speed = (gameLayerNode.isPaused == true ? 0.0 : 1.0)
@@ -61,12 +61,12 @@ class GameMountainScene: SKScene {
     }
     
     func goToMenu() {
-        Status.sharedInstance.gamePaused = false
+        Status.shared.gamePaused = false
         physicsWorld.speed = 1.0
         gameLayerNode.isPaused = !gameLayerNode.isPaused
         backgroundLayerNode.isPaused = !backgroundLayerNode.isPaused
         
-        Status.sharedInstance.restartGame()
+        Status.shared.restartGame()
         
         backgroundLayerNode.goToMenu()
         gameLayerNode.goToMenu()
@@ -85,38 +85,38 @@ class GameMountainScene: SKScene {
     @discardableResult
     func gameActionReceptor(action: GameAction) -> Int {
         if(action == .resumeTheGame) {
-            Status.sharedInstance.statusJogo = .transition
+            Status.shared.statusJogo = .transition
             pauseGame()
-            Status.sharedInstance.statusJogo = .onGame
+            Status.shared.statusJogo = .onGame
         }
         else if(action == .pauseTheGame) {
-            Status.sharedInstance.statusJogo = .transition
+            Status.shared.statusJogo = .transition
             pauseGame()
         }
         else if(action == .restartGame) {
             restartTheGame()
-            Status.sharedInstance.statusJogo = .onGame
+            Status.shared.statusJogo = .onGame
         }
         else if(action == .endGame) {
             endGame()
-            Status.sharedInstance.statusJogo = .onEndGameMenu
+            Status.shared.statusJogo = .onEndGameMenu
         }
         else if(action == .startGame) {
             startGame()
-            Status.sharedInstance.statusJogo = .onGame
+            Status.shared.statusJogo = .onGame
         }
         else if(action == .goToMenu) {
             goToMenu()
-            Status.sharedInstance.statusJogo = .onInitialMenu
+            Status.shared.statusJogo = .onInitialMenu
         }
         else if(action == .goToCredits) {
             
             goToCredits()
-            Status.sharedInstance.statusJogo = .onCreditsMenu
+            Status.shared.statusJogo = .onCreditsMenu
         }
         else if(action == .goToInitialMenu) {
             backToMenuInitial()
-            Status.sharedInstance.statusJogo = .onInitialMenu
+            Status.shared.statusJogo = .onInitialMenu
         }
         else if(action == .quitGame) {
             return 1
@@ -146,20 +146,20 @@ class GameMountainScene: SKScene {
         physicsWorld.gravity = CGVector(dx: 0, dy: -20)
         #endif
         
-        Status.sharedInstance.gamescene = self
+        Status.shared.gamescene = self
         
         backgroundLayerNode = BackgroundLayer(size: self.size)
-        Status.sharedInstance.backgroundLayerNode = backgroundLayerNode
+        Status.shared.backgroundLayerNode = backgroundLayerNode
         addChild(backgroundLayerNode)
         
         hudLayerNode = HudLayer(size: self.size)
-        Status.sharedInstance.hudLayerNode = hudLayerNode
+        Status.shared.hudLayerNode = hudLayerNode
         addChild(hudLayerNode)
         
         hudLayerNode.added()
         
         gameLayerNode = GameLayer(size: self.size)
-        Status.sharedInstance.gameLayerNode = gameLayerNode
+        Status.shared.gameLayerNode = gameLayerNode
         addChild(gameLayerNode)
         
     }
@@ -185,7 +185,7 @@ class GameMountainScene: SKScene {
         gameActionReceptor(action: action)
             
         #endif
-        if Status.sharedInstance.statusJogo == .onGame {
+        if Status.shared.statusJogo == .onGame {
             gameLayerNode.touchesBegan(touches, with: event)
         }
         
@@ -194,7 +194,7 @@ class GameMountainScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         /* Called when a touch begins */
         
-        if Status.sharedInstance.statusJogo == .onGame {
+        if Status.shared.statusJogo == .onGame {
             gameLayerNode.touchesEnded(touches, with: event)
         }
         
@@ -204,7 +204,7 @@ class GameMountainScene: SKScene {
     override func update(_ currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        if Status.sharedInstance.gamePaused == true {
+        if Status.shared.gamePaused == true {
             gameLayerNode.isPaused = true
             backgroundLayerNode.isPaused = true
         }

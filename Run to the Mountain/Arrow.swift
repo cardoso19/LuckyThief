@@ -10,16 +10,16 @@ import SpriteKit
 
 class Arrow: SKSpriteNode {
 
-    //MARK: - Variavies
-    var ativa: Bool = true
-    
-    var damage: Int = 0
+    //MARK: - Variables
+    private var isActive: Bool = true
+    private var damage: Float
     
     var textureOnGround: SKTexture!
     
     //MARK: - Init
-    init(texture: SKTexture?, color: UIColor, size: CGSize, char: Int) {
-        super.init(texture: texture, color: color, size: size)
+    init(texture: SKTexture?, size: CGSize, damage: Float) {
+        self.damage = damage
+        super.init(texture: texture, color: .clear, size: size)
         
         textureOnGround = SKTexture(imageNamed: arrowGroundTextureName)
         textureOnGround.filteringMode = .nearest
@@ -41,6 +41,8 @@ class Arrow: SKSpriteNode {
         
     }
     
+    // MARK: - Physics
+    
     //MARK: - Launcher
     func enemyArrow() {
         physicsBody?.categoryBitMask = PhysicsCategory.enemyArrow
@@ -61,11 +63,11 @@ class Arrow: SKSpriteNode {
         
         texture = textureOnGround
         
-        ativa = false
+        isActive = false
         
         physicsBody?.isDynamic = false
         
-        let xVel = Status.sharedInstance.velocidadeChao
+        let xVel = Status.shared.velocidadeChao
         
         name = arrowDesativadaName
         

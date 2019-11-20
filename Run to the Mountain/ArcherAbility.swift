@@ -10,5 +10,5 @@ import SpriteKit
 
 protocol ArcherAbility: SKNode {
     var arrowTexture: SKTexture { get }
-    func shootArrow(at velocity: CGVector)
+    func shootArrow(with velocity: CGVector)
 }

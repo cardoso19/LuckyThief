@@ -307,7 +307,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                 self.score.zPosition = self.backgroundMenu.zPosition + 10
             }
             
-            self.score.text = "Score: \(Status.sharedInstance.getScore()) m"
+            self.score.text = "Score: \(Status.shared.getScore()) m"
             
             if self.score.parent == nil {
                 self.addChild(self.score)
@@ -330,7 +330,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                 self.topScoreLabel.zPosition = self.backgroundMenu.zPosition + 10
             }
             
-            self.topScoreLabel.text = "Top Score: \(Status.sharedInstance.getScore()) m"
+            self.topScoreLabel.text = "Top Score: \(Status.shared.getScore()) m"
             
             if self.topScoreLabel.parent == nil {
                 self.addChild(self.topScoreLabel)
@@ -487,7 +487,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             #if os(tvOS)
             self.currentFocus()
             #endif
-            Status.sharedInstance.statusJogo = .onPauseMenu
+            Status.shared.statusJogo = .onPauseMenu
         }
         
         let sequence = SKAction.sequence([animation, block])
@@ -582,7 +582,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         resetFocus()
         
-        if Status.sharedInstance.statusJogo == .onEndGameMenu {
+        if Status.shared.statusJogo == .onEndGameMenu {
             removeMenuEndGame()
         }
         else {
@@ -602,7 +602,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
     func goToMenu() {
         resetFocus()
         
-        if Status.sharedInstance.statusJogo == .onEndGameMenu {
+        if Status.shared.statusJogo == .onEndGameMenu {
             removeMenuEndGame()
         }
         else {
@@ -645,14 +645,14 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             #if os(tvOS)
     
             #elseif os(iOS)
-            if Status.sharedInstance.statusJogo == .onGame {
+            if Status.shared.statusJogo == .onGame {
                 if (pauseButtonName == scene?.atPoint(location).name) {
                     createPauseMenu()
                     
                     return .pauseTheGame // Retorna um valor para pausar o jogo.
                 }
             }
-            else if Status.sharedInstance.statusJogo == .onEndGameMenu {
+            else if Status.shared.statusJogo == .onEndGameMenu {
                 if(restartButton == scene?.atPoint(location)) {
                     
                     return .restartGame // Retorna um valor para reiniciar o jogo.
@@ -662,7 +662,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                     return .goToMenu // Retorna um valor para voltar para o menu principal do jogo.
                 }
             }
-            else if Status.sharedInstance.statusJogo == .onPauseMenu {
+            else if Status.shared.statusJogo == .onPauseMenu {
                 if (continueButton == scene?.atPoint(location)) {
                     removeMenuPause()
                     
@@ -677,10 +677,10 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                     return .goToMenu // Retorna um valor para voltar para o menu principal do jogo.
                 }
             }
-            else if Status.sharedInstance.statusJogo == .onCreditsMenu{
+            else if Status.shared.statusJogo == .onCreditsMenu{
                 return  .goToInitialMenu
             }
-            else if Status.sharedInstance.statusJogo == .onInitialMenu{
+            else if Status.shared.statusJogo == .onInitialMenu{
                 if(playButton == scene?.atPoint(location)) {
                     
                     return .startGame // Retorna um valor para iniciar o jogo.
@@ -698,7 +698,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
     //MARK: - Presses
     func press(presses: Set<UIPress>, withEvent event: UIPressesEvent?) -> GameAction {
         for press in presses {
-            if Status.sharedInstance.statusJogo == .onInitialMenu {
+            if Status.shared.statusJogo == .onInitialMenu {
                 if press.type == .menu {
                     return .quitGame
                 }
@@ -719,12 +719,12 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                     previousFocus()
                 }
             }
-            else if Status.sharedInstance.statusJogo == .onGame {
+            else if Status.shared.statusJogo == .onGame {
                 if press.type == .menu {
                     return .pauseTheGame
                 }
             }
-            else if Status.sharedInstance.statusJogo == .onPauseMenu {
+            else if Status.shared.statusJogo == .onPauseMenu {
                 if press.type == .menu {
                     return .resumeTheGame
                 }
@@ -748,7 +748,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                     previousFocus()
                 }
             }
-            else if Status.sharedInstance.statusJogo == .onEndGameMenu {
+            else if Status.shared.statusJogo == .onEndGameMenu {
                 if press.type == .menu {
                     return .goToMenu
                 }
@@ -769,7 +769,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                     previousFocus()
                 }
             }
-            else if Status.sharedInstance.statusJogo == .onCreditsMenu {
+            else if Status.shared.statusJogo == .onCreditsMenu {
                 if press.type == .menu {
                     return .goToInitialMenu
                 }

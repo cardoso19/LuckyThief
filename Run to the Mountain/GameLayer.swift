@@ -55,7 +55,7 @@ class GameLayer: SKNode {
         createEnemyWave()
         createGround()
         
-        let actionScoring = Status.sharedInstance.startScoring()
+        let actionScoring = Status.shared.startScoring()
         run(actionScoring, withKey: actionScoreName)
         
     }
@@ -118,7 +118,7 @@ class GameLayer: SKNode {
                     
                     if vivo == 1 {
                         
-                        let enemiesAlive = Status.sharedInstance.decreaseEnemiesAlive(enemiesDead: 1)
+                        let enemiesAlive = Status.shared.decreaseEnemiesAlive(enemiesDead: 1)
                         
                         if enemiesAlive == 0 {
                             let wait = SKAction.wait(forDuration: 1)
@@ -230,7 +230,7 @@ class GameLayer: SKNode {
     
     @objc func createEnemyWave() {
         
-        let waveCount = Status.sharedInstance.currentWave()
+        let waveCount = Status.shared.currentWave()
         
         let knightCount = Int(waveCount * 2/3) + Int(round(2/3))
         
@@ -259,12 +259,12 @@ class GameLayer: SKNode {
             run(repeatCountK)
         }
         
-        Status.sharedInstance.setEnemiesAlive(createdEnemies: knightCount + archerKnightCount)
+        Status.shared.setEnemiesAlive(createdEnemies: knightCount + archerKnightCount)
         
         print("Enemies Created: \(knightCount + archerKnightCount)")
-        print("Enemies Alive: \(Status.sharedInstance.currentEnemiesAlive())")
+        print("Enemies Alive: \(Status.shared.currentEnemiesAlive())")
         
-        Status.sharedInstance.increaseWaveCount()
+        Status.shared.increaseWaveCount()
         
     }
     
@@ -348,7 +348,7 @@ class GameLayer: SKNode {
         for touch in touches {
             let location = touch.location(in: self)
 
-            if Status.sharedInstance.statusJogo == .onGame {
+            if Status.shared.statusJogo == .onGame {
                 firstPress = location
             }
         }
@@ -357,7 +357,7 @@ class GameLayer: SKNode {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         /* Called when a touch begins */
         
-        if Status.sharedInstance.statusJogo == .onGame {
+        if Status.shared.statusJogo == .onGame {
             for touch in touches {
                 if firstPress != nil && player != nil {
                     #if os(iOS)
@@ -404,7 +404,7 @@ class GameLayer: SKNode {
     func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        if Status.sharedInstance.statusJogo == .onGame {
+        if Status.shared.statusJogo == .onGame {
             enumerateChildNodes(withName: knightName) { (node, _) in
                 
                 let inimigo = node as! Knight

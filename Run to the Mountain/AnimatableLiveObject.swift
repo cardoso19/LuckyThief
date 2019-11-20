@@ -47,4 +47,15 @@ class AnimatableLiveObject: LiveObject {
             skin.run(foreverAction)
         }
     }
+    
+    static func createTextures(name: String, range: ClosedRange<Int>) -> [SKTexture] {
+        var textures: [SKTexture] = []
+        
+        for index in range {
+            let texture = SKTexture(imageNamed: name + "\(index)")
+            texture.filteringMode = .nearest
+            textures.append(texture)
+        }
+        return textures
+    }
 }

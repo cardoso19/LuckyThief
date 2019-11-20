@@ -24,7 +24,7 @@ class Status {
     
     var velocidadeChao: CGFloat = 0.0
     
-    var statusJogo: Int = GameState.OnInitialMenu
+    var statusJogo: GameState = .onInitialMenu
     var gamePaused: Bool = false
     
     var gamescene: GameMountainScene!
@@ -123,7 +123,7 @@ class Status {
         
         if currentLife <= 0 {
             
-            gamescene.gameActionReceptor(action: GameAction.EndGame)
+            gamescene.gameActionReceptor(action: .endGame)
             
         }
         

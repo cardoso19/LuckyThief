@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2FB1E6FE2384D73500BB785A /* Collidable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1E6FD2384D73500BB785A /* Collidable.swift */; };
+		2FB1E6FF2384D73500BB785A /* Collidable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1E6FD2384D73500BB785A /* Collidable.swift */; };
+		2FB1E7042384EC5000BB785A /* LiveObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1E7032384EC5000BB785A /* LiveObject.swift */; };
+		2FB1E7052384EC5000BB785A /* LiveObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1E7032384EC5000BB785A /* LiveObject.swift */; };
+		2FB1E7082384F3C400BB785A /* AnimatableLiveObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1E7072384F3C400BB785A /* AnimatableLiveObject.swift */; };
+		2FB1E7092384F3C400BB785A /* AnimatableLiveObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1E7072384F3C400BB785A /* AnimatableLiveObject.swift */; };
+		2FB1E70B2384FA0100BB785A /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1E70A2384FA0100BB785A /* Character.swift */; };
+		2FB1E70C2384FA0100BB785A /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1E70A2384FA0100BB785A /* Character.swift */; };
+		2FB1E70E2385012900BB785A /* ArcherAbility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1E70D2385012900BB785A /* ArcherAbility.swift */; };
+		2FB1E70F2385012900BB785A /* ArcherAbility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1E70D2385012900BB785A /* ArcherAbility.swift */; };
 		AF07FE8C1CED0798002EE336 /* PlayerActions.sks in Resources */ = {isa = PBXBuildFile; fileRef = AF07FE8B1CED0798002EE336 /* PlayerActions.sks */; };
 		AF08DE001D05E5D600908CCA /* GameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF08DDFF1D05E5D600908CCA /* GameLayer.swift */; };
 		AF08DE031D05E61100908CCA /* HudLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF08DE021D05E61100908CCA /* HudLayer.swift */; };
@@ -49,6 +59,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2FB1E6FD2384D73500BB785A /* Collidable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collidable.swift; sourceTree = "<group>"; };
+		2FB1E7032384EC5000BB785A /* LiveObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObject.swift; sourceTree = "<group>"; };
+		2FB1E7072384F3C400BB785A /* AnimatableLiveObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableLiveObject.swift; sourceTree = "<group>"; };
+		2FB1E70A2384FA0100BB785A /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		2FB1E70D2385012900BB785A /* ArcherAbility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcherAbility.swift; sourceTree = "<group>"; };
 		AF07FE8B1CED0798002EE336 /* PlayerActions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PlayerActions.sks; sourceTree = "<group>"; };
 		AF08DDFF1D05E5D600908CCA /* GameLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLayer.swift; sourceTree = "<group>"; };
 		AF08DE021D05E61100908CCA /* HudLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudLayer.swift; sourceTree = "<group>"; };
@@ -100,6 +115,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2FB1E6FC2384D6EC00BB785A /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				2FB1E6FD2384D73500BB785A /* Collidable.swift */,
+				2FB1E70D2385012900BB785A /* ArcherAbility.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		2FB1E7062384F37B00BB785A /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				2FB1E7072384F3C400BB785A /* AnimatableLiveObject.swift */,
+				2FB1E70A2384FA0100BB785A /* Character.swift */,
+				2FB1E7032384EC5000BB785A /* LiveObject.swift */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
 		AF08DE011D05E5DD00908CCA /* Layers */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,10 +147,11 @@
 		AF5BB5B21CEF7CA50018877E /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				2FB1E7062384F37B00BB785A /* Base */,
+				AFF2E2341CF38DE70071F832 /* ArcherKnight.swift */,
 				AF16D8811CFF59A800E1F2B1 /* Arrow.swift */,
 				AF4E6FA31CEDDC2100CC7F42 /* Enemy.swift */,
 				AFF2E2121CF381E90071F832 /* Knight.swift */,
-				AFF2E2341CF38DE70071F832 /* ArcherKnight.swift */,
 				AFD4883E1CEA40CE00C482A1 /* Player.swift */,
 			);
 			name = Objects;
@@ -171,6 +206,7 @@
 			children = (
 				AFD488281CEA3F6A00C482A1 /* AppDelegate.swift */,
 				AFD4882E1CEA3F6A00C482A1 /* GameViewController.swift */,
+				2FB1E6FC2384D6EC00BB785A /* Protocols */,
 				AF08DE011D05E5DD00908CCA /* Layers */,
 				AF5BB5B31CEF7CB40018877E /* Scenes */,
 				AF5BB5B21CEF7CA50018877E /* Objects */,
@@ -229,7 +265,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "Warrior Iena";
 				TargetAttributes = {
 					AFCB61CF1D07540800259B62 = {
@@ -238,14 +274,14 @@
 					};
 					AFD488241CEA3F6A00C482A1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 75Q35KU859;
-						LastSwiftMigration = 0940;
+						DevelopmentTeam = Q7836M9296;
+						LastSwiftMigration = 1120;
 					};
 				};
 			};
 			buildConfigurationList = AFD488201CEA3F6A00C482A1 /* Build configuration list for PBXProject "Run to the Mountain" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -297,16 +333,21 @@
 			files = (
 				AFCB61F11D0754E500259B62 /* Player.swift in Sources */,
 				AFCB61E71D0754A200259B62 /* GameLayer.swift in Sources */,
+				2FB1E7092384F3C400BB785A /* AnimatableLiveObject.swift in Sources */,
 				AFCB61E81D0754A600259B62 /* HudLayer.swift in Sources */,
 				AFCB61E91D0754A900259B62 /* BackgroundLayer.swift in Sources */,
 				AFCB61EF1D0754DD00259B62 /* Knight.swift in Sources */,
 				AFCB61EE1D0754D900259B62 /* Enemy.swift in Sources */,
 				AFCB61F31D0754F400259B62 /* Constants.swift in Sources */,
+				2FB1E7052384EC5000BB785A /* LiveObject.swift in Sources */,
+				2FB1E70C2384FA0100BB785A /* Character.swift in Sources */,
+				2FB1E6FF2384D73500BB785A /* Collidable.swift in Sources */,
 				AFCB61F61D07572600259B62 /* AppDelegate.swift in Sources */,
 				AFCB61ED1D0754D500259B62 /* Arrow.swift in Sources */,
 				AFCB61F41D0754F800259B62 /* Status.swift in Sources */,
 				AFCB61F51D07571500259B62 /* GameViewController.swift in Sources */,
 				AFCB61F21D0754F100259B62 /* ParallaxNode.swift in Sources */,
+				2FB1E70F2385012900BB785A /* ArcherAbility.swift in Sources */,
 				AFCB61EC1D0754D000259B62 /* GameMountainScene.swift in Sources */,
 				AFCB61F01D0754E100259B62 /* ArcherKnight.swift in Sources */,
 			);
@@ -318,16 +359,21 @@
 			files = (
 				AF08DE001D05E5D600908CCA /* GameLayer.swift in Sources */,
 				AFD4883F1CEA40CE00C482A1 /* Player.swift in Sources */,
+				2FB1E7082384F3C400BB785A /* AnimatableLiveObject.swift in Sources */,
 				AF4E6FA41CEDDC2100CC7F42 /* Enemy.swift in Sources */,
 				AF08DE031D05E61100908CCA /* HudLayer.swift in Sources */,
 				AFD4882D1CEA3F6A00C482A1 /* GameMountainScene.swift in Sources */,
 				AF16D8821CFF59A800E1F2B1 /* Arrow.swift in Sources */,
 				AFD4882F1CEA3F6A00C482A1 /* GameViewController.swift in Sources */,
+				2FB1E7042384EC5000BB785A /* LiveObject.swift in Sources */,
+				2FB1E70B2384FA0100BB785A /* Character.swift in Sources */,
+				2FB1E6FE2384D73500BB785A /* Collidable.swift in Sources */,
 				AF5E7CC41CFCD47F00DC906C /* ParallaxNode.swift in Sources */,
 				AFD488291CEA3F6A00C482A1 /* AppDelegate.swift in Sources */,
 				AF08DE071D05EA1700908CCA /* Status.swift in Sources */,
 				AF5BB5B11CEF7C910018877E /* Constants.swift in Sources */,
 				AFF2E2131CF381E90071F832 /* Knight.swift in Sources */,
+				2FB1E70E2385012900BB785A /* ArcherAbility.swift in Sources */,
 				AFF2E2351CF38DE70071F832 /* ArcherKnight.swift in Sources */,
 				AF08DE051D05E62700908CCA /* BackgroundLayer.swift in Sources */,
 			);
@@ -453,6 +499,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -501,6 +549,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -510,13 +560,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = Q7836M9296;
 				INFOPLIST_FILE = "Run to the Mountain/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.warina.LuckyThief;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mdt.warina.luckythief;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -526,13 +577,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = Q7836M9296;
 				INFOPLIST_FILE = "Run to the Mountain/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.warina.LuckyThief;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mdt.warina.luckythief;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

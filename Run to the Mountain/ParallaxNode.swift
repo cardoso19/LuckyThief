@@ -10,36 +10,24 @@ import SpriteKit
 
 class ParallaxNode: SKSpriteNode {
     
-    var numNodes: Int!
-    
-    var fila: [SKSpriteNode] = []
-    
-    var velocity: CGFloat!
-    
-    var isParallax = true
-    
-    var screenSize: CGSize!
-    var textureSize: CGSize!
-    
-    var initialPosition: CGPoint!
-    
+    let numNodes: Int
+    var pool: [SKSpriteNode] = []
+    let velocity: CGFloat
+    let isParallax: Bool
+    let screenSize: CGSize
+    let textureSize: CGSize
+    let initialPosition: CGPoint
     var arrayTextures: [SKTexture] = []
-    var textureName: String!
+    let textureName: String
     
-    init(texture: SKTexture?, color: UIColor, texturesSize: CGSize, numNodes: Int, zPosition: CGFloat,  initialPosition: CGPoint, velocity: CGFloat, isParallax: Bool, screenSize: CGSize, textureName: String) {
+    init(texture: SKTexture?, color: UIColor, texturesSize: CGSize, numNodes: Int, zPosition: CGFloat, initialPosition: CGPoint, velocity: CGFloat, isParallax: Bool = true, screenSize: CGSize, textureName: String) {
         
         self.velocity = velocity
-        
         self.isParallax = isParallax
-        
         self.screenSize = screenSize
-        
         self.initialPosition = initialPosition
-        
         self.textureSize = texturesSize
-        
         self.textureName = textureName
-        
         self.numNodes = numNodes - 1
         
         super.init(texture: nil, color: .clear, size: screenSize)
@@ -56,7 +44,7 @@ class ParallaxNode: SKSpriteNode {
                     parallaxNode.anchorPoint = CGPoint.zero
                     
                     if index != 0 {
-                        let passado = fila[index - 1]
+                        let passado = pool[index - 1]
                         
                         parallaxNode.position = CGPoint(x: passado.position.x - texturesSize.width, y: initialPosition.y)
                     }
@@ -66,7 +54,7 @@ class ParallaxNode: SKSpriteNode {
                     
                     parallaxNode.name = "\(index)"
                     
-                    fila.append(parallaxNode)
+                    pool.append(parallaxNode)
                     addChild(parallaxNode)
                     
                 }
@@ -79,7 +67,7 @@ class ParallaxNode: SKSpriteNode {
                     parallaxNode.anchorPoint = CGPoint.zero
                     
                     if index != 0 {
-                        let passado = fila[index - 1]
+                        let passado = pool[index - 1]
                         
                         parallaxNode.position = CGPoint(x: passado.position.x - screenSize.width, y: initialPosition.y)
                     }
@@ -89,7 +77,7 @@ class ParallaxNode: SKSpriteNode {
                     
                     parallaxNode.name = "\(index)"
                     
-                    fila.append(parallaxNode)
+                    pool.append(parallaxNode)
                     addChild(parallaxNode)
                     
                 }
@@ -129,7 +117,7 @@ class ParallaxNode: SKSpriteNode {
     func loadTexture() {
         if numNodes > 1 {
             for index in 0...numNodes {
-                let texture = SKTexture(imageNamed: "\(textureName)\(index)")
+                let texture = SKTexture(imageNamed: "\(String(describing: textureName))\(index)")
                 texture.filteringMode = .nearest
                 arrayTextures.append(texture)
             }
@@ -137,27 +125,27 @@ class ParallaxNode: SKSpriteNode {
     }
     
     func getPilha() -> [SKSpriteNode]{
-        let primeiro = fila[0]
-        let ultimo = fila[fila.count - 1]
+        let primeiro = pool[0]
+        let ultimo = pool[pool.count - 1]
         
         return [primeiro, ultimo]
     }
     
     func ordenaPilha() {
         
-        let primeiro = fila[0]
+        let primeiro = pool[0]
         
-        for (index, _) in fila.enumerated() {
-            if (index + 1) != fila.count {
-                fila[index] = fila[index + 1]
+        for (index, _) in pool.enumerated() {
+            if (index + 1) != pool.count {
+                pool[index] = pool[index + 1]
             }
         }
-        fila[fila.count - 1] = primeiro
+        pool[pool.count - 1] = primeiro
         
         if numNodes > 1 {
             let num = Int(arc4random() % UInt32(numNodes))
             
-            fila[fila.count - 1].texture = arrayTextures[num]
+            pool[pool.count - 1].texture = arrayTextures[num]
         }
     }
     
@@ -168,7 +156,7 @@ class ParallaxNode: SKSpriteNode {
             let move = SKAction.move(by: CGVector(dx: velocity, dy: 0), duration: 1.0)
             let forever = SKAction.repeatForever(move)
             
-            for node in fila {
+            for node in pool {
                 node.run(forever)
             }
         }
@@ -184,7 +172,7 @@ class ParallaxNode: SKSpriteNode {
         
         removeAllActions()
         if isParallax {
-            for node in fila {
+            for node in pool {
                 node.removeAllActions()
             }
         }

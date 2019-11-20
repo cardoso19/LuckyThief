@@ -8,19 +8,12 @@
 
 import SpriteKit
 
-class GameMountainScene: SKScene, SKPhysicsContactDelegate {
+class GameMountainScene: SKScene {
     
     //MARK: - Variables
     var gameLayerNode: GameLayer!
     var hudLayerNode: HudLayer!
     var backgroundLayerNode: BackgroundLayer!
-    
-    //MARK:- Collision
-    func didBeginContact(contact: SKPhysicsContact) {
-        
-        gameLayerNode.didBeginContact(contact: contact)
-        
-    }
     
     //MARK: - Game Stats
     func restartTheGame() {
@@ -89,48 +82,49 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
     }
     
     //MARK: - Game Verification
-    func gameActionReceptor(action: Int) -> Int{
-        if(action == GameAction.Resume) {
-            Status.sharedInstance.statusJogo = GameState.Transition
+    @discardableResult
+    func gameActionReceptor(action: GameAction) -> Int {
+        if(action == .resumeTheGame) {
+            Status.sharedInstance.statusJogo = .transition
             pauseGame()
-            Status.sharedInstance.statusJogo = GameState.OnGame
+            Status.sharedInstance.statusJogo = .onGame
         }
-        else if(action == GameAction.Pause) {
-            Status.sharedInstance.statusJogo = GameState.Transition
+        else if(action == .pauseTheGame) {
+            Status.sharedInstance.statusJogo = .transition
             pauseGame()
         }
-        else if(action == GameAction.RestartGame) {
+        else if(action == .restartGame) {
             restartTheGame()
-            Status.sharedInstance.statusJogo = GameState.OnGame
+            Status.sharedInstance.statusJogo = .onGame
         }
-        else if(action == GameAction.EndGame) {
+        else if(action == .endGame) {
             endGame()
-            Status.sharedInstance.statusJogo = GameState.OnEndGameMenu
+            Status.sharedInstance.statusJogo = .onEndGameMenu
         }
-        else if(action == GameAction.StartGame) {
+        else if(action == .startGame) {
             startGame()
-            Status.sharedInstance.statusJogo = GameState.OnGame
+            Status.sharedInstance.statusJogo = .onGame
         }
-        else if(action == GameAction.GoToMenu) {
+        else if(action == .goToMenu) {
             goToMenu()
-            Status.sharedInstance.statusJogo = GameState.OnInitialMenu
+            Status.sharedInstance.statusJogo = .onInitialMenu
         }
-        else if(action == GameAction.GoToCredits) {
+        else if(action == .goToCredits) {
             
             goToCredits()
-            Status.sharedInstance.statusJogo = GameState.OnCreditsMenu
+            Status.sharedInstance.statusJogo = .onCreditsMenu
         }
-        else if(action == GameAction.BackToMenuInitial) {
+        else if(action == .goToInitialMenu) {
             backToMenuInitial()
-            Status.sharedInstance.statusJogo = GameState.OnInitialMenu
+            Status.sharedInstance.statusJogo = .onInitialMenu
         }
-        else if(action == GameAction.QuitGame) {
+        else if(action == .quitGame) {
             return 1
         }
         return 0
     }
     
-    //MARK: - View
+    //MARK: - Life Cycle
     override func didMove(to view: SKView) {
         
         let camera = SKCameraNode()
@@ -191,7 +185,7 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
         gameActionReceptor(action: action)
             
         #endif
-        if Status.sharedInstance.statusJogo == GameState.OnGame {
+        if Status.sharedInstance.statusJogo == .onGame {
             gameLayerNode.touchesBegan(touches, with: event)
         }
         
@@ -200,7 +194,7 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         /* Called when a touch begins */
         
-        if Status.sharedInstance.statusJogo == GameState.OnGame {
+        if Status.sharedInstance.statusJogo == .onGame {
             gameLayerNode.touchesEnded(touches, with: event)
         }
         
@@ -222,4 +216,11 @@ class GameMountainScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
+}
+
+// MARK: - SKPhysicsContactDelegate
+extension GameMountainScene: SKPhysicsContactDelegate {
+    func didBegin(_ contact: SKPhysicsContact) {
+        gameLayerNode.didBegin(contact)
+    }
 }

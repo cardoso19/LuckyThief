@@ -181,12 +181,6 @@ class BackgroundLayer: SKNode {
         
         let montanhasTextureName = parallaxTextureNameMontanha
         
-        var isPad = false
-        
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            isPad = true
-        }
-        
         var monVelocity = velocityMontanha
         var texture: SKTexture!
         
@@ -203,9 +197,9 @@ class BackgroundLayer: SKNode {
             
             #if os(iOS)
                 //15-30
-            monVelocity += 5
+            monVelocity -= 5
             #elseif os(tvOS)
-            monVelocity += 10
+            monVelocity -= 10
             #endif
         }
         
@@ -234,7 +228,6 @@ class BackgroundLayer: SKNode {
             
             let nuvem = ParallaxNode(texture: texture, color: .clear, texturesSize: textureSize, numNodes: 1, zPosition: parallaxZpositionNuvens + CGFloat(index), initialPosition: position, velocity: numVelocity, isParallax: true, screenSize: size, textureName: parallaxTextureNameNuvens)
             nuvem.name = "Nuvem \(index)"
-            print(nuvem.name)
             
             #if os(iOS)
                 // 2.5-5

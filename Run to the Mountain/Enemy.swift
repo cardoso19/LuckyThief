@@ -152,3 +152,10 @@ class Enemy: SKSpriteNode {
     }
     
 }
+
+// MARK: - Collidable
+extension Enemy: Collidable {
+    func collisionWith(object: Collidable, collisionType: UInt32) {
+        
+    }
+}

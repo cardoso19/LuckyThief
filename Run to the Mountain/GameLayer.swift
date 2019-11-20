@@ -75,52 +75,36 @@ class GameLayer: SKNode {
     }
     
     //MARK:- Collision
-    func didBeginContact(contact: SKPhysicsContact) {
+    func didBegin(_ contact: SKPhysicsContact) {
         
-        let bodyA = contact.bodyA
-        let bodyB = contact.bodyB
+        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        guard
+            let collidableA = contact.bodyA.node as? Collidable,
+            let collidableB = contact.bodyB.node as? Collidable else {
+                return
+        }
+        collidableA.collisionWith(object: collidableB, collisionType: collision)
+        collidableB.collisionWith(object: collidableA, collisionType: collision)
         
-        let collision = contact.bodyA.categoryBitMask |
-            contact.bodyB.categoryBitMask
-        
-        if collision == PhysicsCategory.player | PhysicsCategory.enemy {
-            
-            var inimigo: Enemy!
-            
-            if bodyA.node?.name == knightName {
-                
-                inimigo = bodyA.node as! Enemy
-                
-            }
-            else if bodyB.node?.name == knightName {
-                
-                inimigo = bodyB.node as! Enemy
-                
-            }
-            
-            if inimigo != nil {
-                inimigo.attack(player: player)
-            }
-            
-        } else if collision == PhysicsCategory.enemy | PhysicsCategory.playerArrow {
+        if collision == PhysicsCategory.enemy | PhysicsCategory.playerArrow {
             
             var inimigo: Enemy!
             var flecha: Arrow!
             
             if bodyA.node?.name == arrowName {
                 if bodyB.node != nil {
-                    inimigo = bodyB.node as! Enemy
+                    inimigo = bodyB.node as? Enemy
                 }
                 if bodyA.node != nil {
-                    flecha = bodyA.node as! Arrow
+                    flecha = bodyA.node as? Arrow
                 }
             }
             else if  bodyB.node?.name == arrowName {
                 if bodyA.node != nil {
-                    inimigo = bodyA.node as! Enemy
+                    inimigo = bodyA.node as? Enemy
                 }
                 if bodyB.node != nil {
-                    flecha = bodyB.node as! Arrow
+                    flecha = bodyB.node as? Arrow
                 }
             }
             
@@ -162,10 +146,10 @@ class GameLayer: SKNode {
             var flecha: Arrow!
             
             if bodyA.node?.name == arrowName {
-                flecha = bodyA.node as! Arrow
+                flecha = bodyA.node as? Arrow
             }
             else {
-                flecha = bodyB.node as! Arrow
+                flecha = bodyB.node as? Arrow
             }
             
             if flecha.ativa {
@@ -183,10 +167,10 @@ class GameLayer: SKNode {
             var flecha: Arrow!
             
             if bodyA.node?.name == arrowName {
-                flecha = bodyA.node as! Arrow
+                flecha = bodyA.node as? Arrow
             }
             else if bodyB.node?.name == arrowName {
-                flecha = bodyB.node as! Arrow
+                flecha = bodyB.node as? Arrow
             }
             
             if flecha != nil {
@@ -364,7 +348,7 @@ class GameLayer: SKNode {
         for touch in touches {
             let location = touch.location(in: self)
 
-            if Status.sharedInstance.statusJogo == GameState.OnGame {
+            if Status.sharedInstance.statusJogo == .onGame {
                 firstPress = location
             }
         }
@@ -373,7 +357,7 @@ class GameLayer: SKNode {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         /* Called when a touch begins */
         
-        if Status.sharedInstance.statusJogo == GameState.OnGame {
+        if Status.sharedInstance.statusJogo == .onGame {
             for touch in touches {
                 if firstPress != nil && player != nil {
                     #if os(iOS)
@@ -420,7 +404,7 @@ class GameLayer: SKNode {
     func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        if Status.sharedInstance.statusJogo == GameState.OnGame {
+        if Status.sharedInstance.statusJogo == .onGame {
             enumerateChildNodes(withName: knightName) { (node, _) in
                 
                 let inimigo = node as! Knight

@@ -98,3 +98,10 @@ class Arrow: SKSpriteNode {
     }
     
 }
+
+// MARK: - Collidable
+extension Arrow: Collidable {
+    func collisionWith(object: Collidable, collisionType: UInt32) {
+        
+    }
+}

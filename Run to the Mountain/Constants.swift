@@ -22,27 +22,26 @@ struct PhysicsCategory {
     static let ground: UInt32 = 0b100000 // 32
 }
 // Game Stats and Actions
-struct GameState {
-    static let Nothing: Int = 0
-    static let OnInitialMenu: Int = 1
-    static let OnGame: Int = 2
-    static let OnPauseMenu: Int = 3
-    static let OnEndGameMenu: Int = 4
-    static let OnCreditsMenu: Int = 5
-    static let Transition: Int = 6
+enum GameState {
+    case onInitialMenu
+    case onGame
+    case onPauseMenu
+    case onEndGameMenu
+    case onCreditsMenu
+    case transition
 }
 
-struct GameAction {
-    static let Nothing: Int = 0
-    static let StartGame: Int = 1
-    static let RestartGame: Int = 2
-    static let GoToMenu: Int = 3
-    static let GoToCredits: Int = 4
-    static let BackToMenuInitial: Int = 5
-    static let Pause: Int = 6
-    static let Resume: Int = 7
-    static let EndGame: Int = 8
-    static let QuitGame: Int = 9
+enum GameAction {
+    case nothing
+    case startGame
+    case restartGame
+    case goToMenu
+    case goToCredits
+    case goToInitialMenu
+    case pauseTheGame
+    case resumeTheGame
+    case endGame
+    case quitGame
 }
 // Char Types
 struct CharType {
@@ -133,17 +132,3 @@ let knightTextureName = "knight"
 
 let archerKnightTextureName = "aKnight"
 let playerTextureName = "player"
-
-//MARK: - Math
-func round(num: Float) -> Int{
-    
-    let dif = num - Float(Int(num))
-    
-    if dif <= 0.5 {
-        return 0
-    }
-    
-    return 1
-}
-
-

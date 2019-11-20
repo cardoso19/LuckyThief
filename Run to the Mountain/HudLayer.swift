@@ -487,7 +487,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             #if os(tvOS)
             self.currentFocus()
             #endif
-            Status.sharedInstance.statusJogo = GameState.OnPauseMenu
+            Status.sharedInstance.statusJogo = .onPauseMenu
         }
         
         let sequence = SKAction.sequence([animation, block])
@@ -582,7 +582,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
         
         resetFocus()
         
-        if Status.sharedInstance.statusJogo == GameState.OnEndGameMenu {
+        if Status.sharedInstance.statusJogo == .onEndGameMenu {
             removeMenuEndGame()
         }
         else {
@@ -602,7 +602,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
     func goToMenu() {
         resetFocus()
         
-        if Status.sharedInstance.statusJogo == GameState.OnEndGameMenu {
+        if Status.sharedInstance.statusJogo == .onEndGameMenu {
             removeMenuEndGame()
         }
         else {
@@ -636,7 +636,7 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
     }
     
     //MARK: - Touchs
-    func touch(touches: Set<UITouch>, withEvent event: UIEvent?, paused: Bool) -> Int {
+    func touch(touches: Set<UITouch>, withEvent event: UIEvent?, paused: Bool) -> GameAction {
         /* Called when a touch begins */
         
         for touch in touches {
@@ -645,71 +645,71 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
             #if os(tvOS)
     
             #elseif os(iOS)
-            if Status.sharedInstance.statusJogo == GameState.OnGame {
+            if Status.sharedInstance.statusJogo == .onGame {
                 if (pauseButtonName == scene?.atPoint(location).name) {
                     createPauseMenu()
                     
-                    return GameAction.Pause // Retorna um valor para pausar o jogo.
+                    return .pauseTheGame // Retorna um valor para pausar o jogo.
                 }
             }
-            else if Status.sharedInstance.statusJogo == GameState.OnEndGameMenu {
+            else if Status.sharedInstance.statusJogo == .onEndGameMenu {
                 if(restartButton == scene?.atPoint(location)) {
                     
-                    return GameAction.RestartGame // Retorna um valor para reiniciar o jogo.
+                    return .restartGame // Retorna um valor para reiniciar o jogo.
                 }
                 else if(menuButton == scene?.atPoint(location)) {
                     
-                    return GameAction.GoToMenu // Retorna um valor para voltar para o menu principal do jogo.
+                    return .goToMenu // Retorna um valor para voltar para o menu principal do jogo.
                 }
             }
-            else if Status.sharedInstance.statusJogo == GameState.OnPauseMenu {
+            else if Status.sharedInstance.statusJogo == .onPauseMenu {
                 if (continueButton == scene?.atPoint(location)) {
                     removeMenuPause()
                     
-                    return GameAction.Resume // Retorna um valor para despausar o jogo.
+                    return .resumeTheGame // Retorna um valor para despausar o jogo.
                 }
                 else if(restartButton == scene?.atPoint(location)) {
                     
-                    return GameAction.RestartGame // Retorna um valor para reiniciar o jogo.
+                    return .restartGame // Retorna um valor para reiniciar o jogo.
                 }
                 else if(menuButton == scene?.atPoint(location)) {
                     
-                    return GameAction.GoToMenu // Retorna um valor para voltar para o menu principal do jogo.
+                    return .goToMenu // Retorna um valor para voltar para o menu principal do jogo.
                 }
             }
-            else if Status.sharedInstance.statusJogo == GameState.OnCreditsMenu{
-                return  GameAction.BackToMenuInitial
+            else if Status.sharedInstance.statusJogo == .onCreditsMenu{
+                return  .goToInitialMenu
             }
-            else if Status.sharedInstance.statusJogo == GameState.OnInitialMenu{
+            else if Status.sharedInstance.statusJogo == .onInitialMenu{
                 if(playButton == scene?.atPoint(location)) {
                     
-                    return GameAction.StartGame // Retorna um valor para iniciar o jogo.
+                    return .startGame // Retorna um valor para iniciar o jogo.
                 }
                 else if(creditsButton == scene?.atPoint(location)) {
                     
-                    return GameAction.GoToCredits // Retorna um valor para inicia o menu de creditos
+                    return .goToCredits // Retorna um valor para inicia o menu de creditos
                 }
             }
             #endif
         }
         
-        return GameAction.Nothing
+        return .nothing
     }
     //MARK: - Presses
-    func press(presses: Set<UIPress>, withEvent event: UIPressesEvent?) -> Int {
+    func press(presses: Set<UIPress>, withEvent event: UIPressesEvent?) -> GameAction {
         for press in presses {
-            if Status.sharedInstance.statusJogo == GameState.OnInitialMenu {
+            if Status.sharedInstance.statusJogo == .onInitialMenu {
                 if press.type == .menu {
-                    return GameAction.QuitGame
+                    return .quitGame
                 }
                 else if press.type == .select {
                     let button = arrayBotoes[currentIndex]
                     
                     if button == playButton {
-                        return GameAction.StartGame
+                        return .startGame
                     }
                     else if button == creditsButton {
-                        return GameAction.GoToCredits
+                        return .goToCredits
                     }
                 }
                 else if press.type == .rightArrow {
@@ -719,26 +719,26 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                     previousFocus()
                 }
             }
-            else if Status.sharedInstance.statusJogo == GameState.OnGame {
+            else if Status.sharedInstance.statusJogo == .onGame {
                 if press.type == .menu {
-                    return GameAction.Pause
+                    return .pauseTheGame
                 }
             }
-            else if Status.sharedInstance.statusJogo == GameState.OnPauseMenu {
+            else if Status.sharedInstance.statusJogo == .onPauseMenu {
                 if press.type == .menu {
-                    return GameAction.Resume
+                    return .resumeTheGame
                 }
                 else if press.type == .select {
                     let button = arrayBotoes[currentIndex]
                     
                     if button == continueButton {
-                        return GameAction.Resume
+                        return .resumeTheGame
                     }
                     else if button == restartButton {
-                        return GameAction.RestartGame
+                        return .restartGame
                     }
                     else if button == menuButton {
-                        return GameAction.GoToMenu
+                        return .goToMenu
                     }
                 }
                 else if press.type == .rightArrow {
@@ -748,18 +748,18 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                     previousFocus()
                 }
             }
-            else if Status.sharedInstance.statusJogo == GameState.OnEndGameMenu {
+            else if Status.sharedInstance.statusJogo == .onEndGameMenu {
                 if press.type == .menu {
-                    return GameAction.GoToMenu
+                    return .goToMenu
                 }
                 else if press.type == .select {
                     let button = arrayBotoes[currentIndex]
                     
                     if button == restartButton {
-                        return GameAction.RestartGame
+                        return .restartGame
                     }
                     else if button == menuButton {
-                        return GameAction.GoToMenu
+                        return .goToMenu
                     }
                 }
                 else if press.type == .rightArrow {
@@ -769,17 +769,17 @@ class HudLayer: SKNode, UIGestureRecognizerDelegate{
                     previousFocus()
                 }
             }
-            else if Status.sharedInstance.statusJogo == GameState.OnCreditsMenu {
+            else if Status.sharedInstance.statusJogo == .onCreditsMenu {
                 if press.type == .menu {
-                    return GameAction.BackToMenuInitial
+                    return .goToInitialMenu
                 }
                 else if press.type == .select {
-                    return GameAction.BackToMenuInitial
+                    return .goToInitialMenu
                 }
             }
         }
         
-        return GameAction.Nothing
+        return .nothing
     }
     
 }

@@ -8,22 +8,53 @@
 
 import SpriteKit
 
-class Player: SKSpriteNode {
+class Player: Character {
     
     var life = 100
     
     var lifeLabel: SKLabelNode!
     
-    var cavalo: SKSpriteNode!
-    var person: SKSpriteNode!
-    
-    var arrowTexture: SKTexture!
-    
-    var physicsSize: CGSize!
-    
-    var textures: [String: [SKTexture]]!
-    
     //MARK: - Init
+    init(size: CGSize, totalLife: Float, life: Float, attack: Float, attackSpeed: Float, movimentSpeed: CGVector) {
+        let animatableTextures = [AnimatableTexture(zPosition: playerZposition, textures: Character.createHorseTextures()),
+                                  AnimatableTexture(zPosition: playerZposition + 50, textures: Player.createPlayerTextures())]
+        super.init(size: size,
+                   totalLife: totalLife,
+                   life: life,
+                   attack: attack,
+                   attackSpeed: attackSpeed,
+                   movimentSpeed: movimentSpeed,
+                   mass: 0,
+                   textures: animatableTextures)
+        generalConfigs()
+        configPhysics()
+        lifeConstructor(originalSize: size)
+    }
+    
+    private static func createPlayerTextures() -> [SKTexture] {
+        var playerTextures: [SKTexture] = []
+        
+        for index in 0...14 {
+            let texture = SKTexture(imageNamed: playerTextureName + "\(index)")
+            texture.filteringMode = .nearest
+            playerTextures.append(texture)
+        }
+    }
+    
+    private func configPhysics() {
+        physicsBody?.categoryBitMask = PhysicsCategory.player
+        physicsBody?.collisionBitMask = PhysicsCategory.none
+        physicsBody?.contactTestBitMask = PhysicsCategory.enemyArrow
+    }
+    
+    private func generalConfigs() {
+        name = playerName
+        zPosition = playerZposition
+    }
+    
+    // MARK: - Physics
+    override
+    
     init(texture: SKTexture?, color: UIColor, size: CGSize, mass: CGFloat, textures: [String: [SKTexture]]) {
         super.init(texture: texture, color: color, size: CGSize(width: size.width * 2, height: size.height * 2))
         
@@ -58,7 +89,7 @@ class Player: SKSpriteNode {
     }
     
     //MARK: - Life Label
-    func lifeConstructor() {
+    func lifeConstructor(originalSize: CGSize) {
         
         lifeLabel = SKLabelNode(fontNamed: "DisposableDroid BB")
         lifeLabel.text = "100%"
@@ -68,7 +99,7 @@ class Player: SKSpriteNode {
         lifeLabel.fontSize = 40
         #endif
         lifeLabel.fontColor = .white
-        lifeLabel.position = CGPoint(x: 0, y: physicsSize.height * 1/2)
+        lifeLabel.position = CGPoint(x: 0, y: originalSize.height * 1/2)
         lifeLabel.zPosition = zPosition + 1
         
         addChild(lifeLabel)
@@ -76,11 +107,11 @@ class Player: SKSpriteNode {
     }
     
     //MARK: - Damage
-    func reciveDamage(hitDamage: Int) {
+    func receiveDamage(_ damage: Int) {
         
-        life -= hitDamage
+        life -= damage
         
-        if life < 0 {
+        if life <= 0 {
             lifeLabel.text = "0%"
         }
         else {
@@ -92,60 +123,38 @@ class Player: SKSpriteNode {
         Status.sharedInstance.updateLifeOnHud(currentLife: life)
         
     }
+}
+
+// MARK: - Collidable
+extension Player: Collidable {
+    func collisionWith(object: Collidable, collisionType: UInt32) {
+        if collisionType == PhysicsCategory.player | PhysicsCategory.enemy {
+            let enemy = object as? Enemy
+            let attackDamage: Int = enemy?.attackDamage ?? 0
+            
+            receiveDamage(attackDamage)
+        }
+    }
+}
+
+// MARK: - ArcherAbility
+extension Player: ArcherAbility {
+    var arrowTexture: SKTexture {
+        let texture = SKTexture(imageNamed: arrowTextureName)
+        texture.filteringMode = .nearest
+        return texture
+    }
     
-    //MARK: - Shoot
-    func shoot(velocity: CGVector) {
-        
+    func shootArrow(at velocity: CGVector) {
         if let gameLayer = self.parent {
             
-            let arrow = Arrow(texture: arrowTexture, color: .clear, size: CGSize(width: physicsSize.width * 1/10, height: physicsSize.height * 1/2), char: CharType.Player)
+            let arrow = Arrow(texture: arrowTexture, color: .clear, size: CGSize(width: size.width / 2, height: size.height / 2), char: CharType.Player)
             arrow.position = CGPoint(x: self.position.x, y: self.position.y)
             
             gameLayer.addChild(arrow)
             
             arrow.physicsBody?.applyImpulse(velocity)
             arrow.zRotation = atan2(velocity.dy, velocity.dx) + CGFloat(Double.pi/2)
-            
         }
-        
     }
-    
-    //MARK: - Create
-    func createHorse() {
-        
-        cavalo = SKSpriteNode(texture: nil, color: .clear, size: CGSize(width: size.width, height: size.height))
-        cavalo.position = CGPoint(x: 0, y: 0)
-        cavalo.zPosition = playerZposition
-        
-        let animate = SKAction.animate(with: textures[horseTextureName]!, timePerFrame: 0.025)
-        
-        let forever = SKAction.repeatForever(animate)
-        
-        self.addChild(cavalo)
-        
-        cavalo.run(forever)
-        
-    }
-    
-    func createPerson() {
-        
-        person = SKSpriteNode(texture: nil, color: .clear, size: CGSize(width: size.width, height: size.height))
-        person.position = CGPoint(x: 0, y: 0)
-        person.zPosition = playerZposition + 50
-        
-        let animate = SKAction.animate(with: textures[playerTextureName]!, timePerFrame: 0.025)
-        
-        let forever = SKAction.repeatForever(animate)
-        
-        self.addChild(person)
-        
-        person.run(forever)
-        
-    }
-    
-    //MARK: - Coder
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }

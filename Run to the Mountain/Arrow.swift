@@ -57,7 +57,7 @@ final class Arrow: SKSpriteNode {
         run(forever)
         selfDestruction()
     }
-    
+
     func selfDestruction() {
         let wait = SKAction.wait(forDuration: 5)
         
@@ -73,6 +73,7 @@ final class Arrow: SKSpriteNode {
 // MARK: - Collidable
 extension Arrow: Collidable {
     func collisionWith(object: Collidable, collisionType: UInt32) {
+        guard isActive else { return }
         if object is GroundNode {
             groundContact()
         } else if let aliveObject = object as? Alive {

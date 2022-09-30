@@ -73,6 +73,11 @@ final class ArcherKnight: LiveObject {
     }
 }
 
+// MARK: - Collidable
+extension ArcherKnight: Collidable {
+    func collisionWith(object: Collidable, collisionType: UInt32) {}
+}
+
 // MARK: - ArcherAbility
 extension ArcherKnight: ArcherAbility {
     var arrowTexture: SKTexture {
@@ -86,7 +91,7 @@ extension ArcherKnight: ArcherAbility {
 
         let arrow = Arrow(texture: arrowTexture,
                           size: CGSize(width: size.width / 15, height: size.height / 4),
-                          damage: enemyArrowDamage)
+                          damage: attack)
         arrow.position = CGPoint(x: self.position.x, y: self.position.y)
 
         arrow.physicsBody?.categoryBitMask = PhysicsCategory.enemyArrow

@@ -38,6 +38,7 @@ open class LiveObject: SKSpriteNode {
                           isDynamic: isDynamic)
         setupViewHierarchy()
         animateTextures(textures)
+        setLifeLabel(value: life)
     }
     
     @available(*, unavailable)

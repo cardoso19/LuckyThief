@@ -43,7 +43,6 @@ final class Player: LiveObject {
     // MARK: - Death
     override func theObjectIsDead() {
         Status.shared.thePlayerIsDead()
-        super.theObjectIsDead()
     }
 }
 

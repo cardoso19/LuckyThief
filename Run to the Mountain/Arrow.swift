@@ -8,16 +8,15 @@
 
 import SpriteKit
 
-class Arrow: SKSpriteNode {
+final class Arrow: SKSpriteNode {
 
     //MARK: - Variables
-    private var isActive: Bool = true
-    private var damage: Float
-    
-    var textureOnGround: SKTexture!
+    let damage: Int
+    private(set) var isActive: Bool = true
+    private var textureOnGround: SKTexture!
     
     //MARK: - Init
-    init(texture: SKTexture?, size: CGSize, damage: Float) {
+    init(texture: SKTexture?, size: CGSize, damage: Int) {
         self.damage = damage
         super.init(texture: texture, color: .clear, size: size)
         
@@ -28,39 +27,19 @@ class Arrow: SKSpriteNode {
         physicsBody?.affectedByGravity = true
      
         selfDestruction()
-        
-        if char == CharType.Player {
-            playerArrow()
-        }
-        else if char == CharType.Enemy {
-            enemyArrow()
-        }
+
         physicsBody?.contactTestBitMask = PhysicsCategory.ground
         
         name = arrowName
-        
+    }
+
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Physics
-    
-    //MARK: - Launcher
-    func enemyArrow() {
-        physicsBody?.categoryBitMask = PhysicsCategory.enemyArrow
-        physicsBody?.collisionBitMask = PhysicsCategory.playerArrow
-        
-        damage = enemyArrowDamage
-    }
-    
-    func playerArrow() {
-        physicsBody?.categoryBitMask = PhysicsCategory.playerArrow
-        physicsBody?.collisionBitMask = PhysicsCategory.enemyArrow
-        
-        damage = playerArrowDamage
-    }
-    
-    //MARK: - Ground Contact
-    func groundContact() {
-        
+    private func groundContact() {
         texture = textureOnGround
         
         isActive = false
@@ -77,12 +56,9 @@ class Arrow: SKSpriteNode {
         removeAllActions()
         run(forever)
         selfDestruction()
-        
     }
     
-    //MARK: - Sel Destruction
     func selfDestruction() {
-        
         let wait = SKAction.wait(forDuration: 5)
         
         let block = SKAction.run {
@@ -91,19 +67,17 @@ class Arrow: SKSpriteNode {
         
         let sequence = SKAction.sequence([wait, block])
         run(sequence)
-        
     }
-    
-    //MARK: - Coder
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }
 
 // MARK: - Collidable
 extension Arrow: Collidable {
     func collisionWith(object: Collidable, collisionType: UInt32) {
-        
+        if object is GroundNode {
+            groundContact()
+        } else if let aliveObject = object as? Alive {
+            aliveObject.remove(lifePoints: damage)
+            removeFromParent()
+        }
     }
 }

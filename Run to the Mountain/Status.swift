@@ -82,10 +82,13 @@ class Status {
     func setEnemiesAlive(createdEnemies: Int) {
         enemiesAlive = createdEnemies
     }
-    
-    func decreaseEnemiesAlive(enemiesDead: Int) -> Int {
-        enemiesAlive -= enemiesDead
-        return enemiesAlive
+
+    func removeOneEnemy() {
+        enemiesAlive -= 1
+        guard enemiesAlive <= 0 else {
+            return
+        }
+        gameLayerNode.createEnemyWave()
     }
     
     func resetEnemiesAlive() {

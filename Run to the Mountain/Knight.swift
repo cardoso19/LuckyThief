@@ -8,80 +8,91 @@
 
 import SpriteKit
 
-class Knight: Enemy {
-    
-    override init(texture: SKTexture?, color: UIColor, size: CGSize, sceneSize: CGSize, mass: CGFloat, textures: [String: [SKTexture]]) {
-        super.init(texture: texture, color: color, size: size, sceneSize: sceneSize, mass: mass, textures: textures)
-        
-        name = knightName
-        
-        #if os(iOS)
-        enemyVelocity = CGVector(dx: -120, dy: 0)
-        #elseif os(tvOS)
-        enemyVelocity = CGVector(dx: -200, dy: 0)
-        #endif
-        
-        life = 20
+final class Knight: LiveObject {
+    // MARK: - Variables
+#if os(iOS)
+    private let movementSpeed = CGVector(dx: -120, dy: 0)
+#elseif os(tvOS)
+    private let movementSpeed = CGVector(dx: -200, dy: 0)
+#endif
+    private var onPlayer = false
+
+    // MARK: - Init
+    init(size: CGSize, life: Int, attack: Int) {
+        let horseTextures = AnimationCache.shared.fetchTextures(name: horseTextureName,
+                                                                numberOfFrames: 14,
+                                                                zPosition: playerZposition)
+        let knightTextures = AnimationCache.shared.fetchTextures(name: knightTextureName,
+                                                                 numberOfFrames: 14,
+                                                                 zPosition: playerZposition + 50)
+        super.init(textures: [horseTextures, knightTextures],
+                   size: size,
+                   life: life,
+                   attack: attack,
+                   mass: 100000,
+                   affectedByGravity: false,
+                   allowsRotation: false,
+                   isDynamic: true)
+        configPhysics()
+        generalConfigs()
     }
-    
-    //MARK: - Create
-    override func createPerson() {
-        
-        person = SKSpriteNode(texture: nil, color: .clear, size: CGSize(width: size.width, height: size.height))
-        person.position = CGPoint(x: 0, y: 0)
-        person.zPosition = playerZposition + 50
-        
-        let animate = SKAction.animate(with: textures[knightTextureName]!, timePerFrame: 0.025)
-        
-        let forever = SKAction.repeatForever(animate)
-        
-        self.addChild(person)
-        
-        person.run(forever)
-        
+
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func configPhysics() {
+        physicsBody?.categoryBitMask = PhysicsCategory.enemy
+        physicsBody?.collisionBitMask = PhysicsCategory.player
+        physicsBody?.contactTestBitMask = PhysicsCategory.playerArrow | PhysicsCategory.player
+    }
+
+    private func generalConfigs() {
+        name = knightName
+        zPosition = playerZposition
     }
     
     //MARK: - Attack
-    override func attack(player: Player) {
-        super.attack(player: player)
-        
-        attackedPlayer()
-    }
-    
     func attackedPlayer() {
         onPlayer = true
         
         let wait = SKAction.wait(forDuration: 3)
         let block = SKAction.run {
-            
             self.onPlayer = false
-            
         }
         
         let sequence = SKAction.sequence([wait, block])
-        
         run(sequence)
     }
-        
-    //MARK: - Search For The Player
-    override func searchPlayer() {
-        
-        if !isPaused {
-            if !onPlayer {
-                physicsBody?.velocity = enemyVelocity
-            }
-            else {
-                physicsBody?.velocity = CGVector(dx: -enemyVelocity.dx * 6/10, dy: 0)
-            }
-            
-            cavalo.physicsBody?.velocity = (physicsBody?.velocity)!
+
+    override func theObjectIsDead() {
+        Status.shared.removeOneEnemy()
+        super.theObjectIsDead()
+    }
+}
+
+// MARK: - Collidable
+extension Knight: Collidable {
+    func collisionWith(object: Collidable, collisionType: UInt32) {
+        guard let aliveObject = object as? Alive else { return }
+        aliveObject.remove(lifePoints: attack)
+        attackedPlayer()
+    }
+}
+
+// MARK: - Enemy
+extension Knight: Enemy {
+    func searchForPlayer() {
+        guard !isPaused else {
+            return
         }
-        
+        let velocity: CGVector
+        if !onPlayer {
+            velocity = movementSpeed
+        } else {
+            velocity = CGVector(dx: -movementSpeed.dx * 6/10, dy: 0)
+        }
+        physicsBody?.velocity = velocity
     }
-   
-    //MARK: - Coder
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }

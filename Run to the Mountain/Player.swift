@@ -8,30 +8,25 @@
 
 import SpriteKit
 
-class Player: Character {
-    
-    // MARK: - Variables
-    private var lifeLabel: SKLabelNode!
-    
+final class Player: LiveObject {
     //MARK: - Init
-    init(size: CGSize, totalLife: Float, life: Float, attack: Float, attackSpeed: Float, movimentSpeed: CGVector) {
-        let horseTextures = AnimatableLiveObject.createTextures(name: horseTextureName, range: 0...14)
-        let playerTextures = AnimatableLiveObject.createTextures(name: playerTextureName, range: 0...14)
-        let animatableTextures = [AnimatableTexture(zPosition: playerZposition,
-                                                    textures: horseTextures),
-                                  AnimatableTexture(zPosition: playerZposition + 50,
-                                                    textures: playerTextures)]
-        super.init(size: size,
-                   totalLife: totalLife,
+    init(size: CGSize, life: Int, attack: Int) {
+        let horseTextures = AnimationCache.shared.fetchTextures(name: horseTextureName,
+                                                                numberOfFrames: 14,
+                                                                zPosition: playerZposition)
+        let playerTextures = AnimationCache.shared.fetchTextures(name: playerTextureName,
+                                                                numberOfFrames: 14,
+                                                                zPosition: playerZposition + 50)
+        super.init(textures: [horseTextures, playerTextures],
+                   size: size,
                    life: life,
                    attack: attack,
-                   attackSpeed: attackSpeed,
-                   movimentSpeed: movimentSpeed,
                    mass: 0,
-                   textures: animatableTextures)
+                   affectedByGravity: false,
+                   allowsRotation: false,
+                   isDynamic: false)
         generalConfigs()
         configPhysics()
-        setLifeLabel(visible: true)
     }
     
     private func configPhysics() {
@@ -48,19 +43,13 @@ class Player: Character {
     // MARK: - Death
     override func theObjectIsDead() {
         Status.shared.thePlayerIsDead()
+        super.theObjectIsDead()
     }
 }
 
 // MARK: - Collidable
 extension Player: Collidable {
-    func collisionWith(object: Collidable, collisionType: UInt32) {
-        if collisionType == PhysicsCategory.player | PhysicsCategory.enemy {
-            let enemy = object as? Enemy
-            let attackDamage: Float = Float(enemy?.attackDamage ?? 0)
-            
-            receiveLifePoints(-attackDamage)
-        }
-    }
+    func collisionWith(object: Collidable, collisionType: UInt32) {}
 }
 
 // MARK: - ArcherAbility
@@ -75,10 +64,13 @@ extension Player: ArcherAbility {
         guard let gameLayer = self.parent else { return }
 
         let arrow = Arrow(texture: arrowTexture,
-                          color: .clear,
-                          size: CGSize(width: size.width / 2, height: size.height / 2),
-                          char: CharType.Player)
+                          size: CGSize(width: size.width / 15, height: size.height / 4),
+                          damage: attack)
         arrow.position = CGPoint(x: self.position.x, y: self.position.y)
+
+        arrow.physicsBody?.categoryBitMask = PhysicsCategory.playerArrow
+        arrow.physicsBody?.collisionBitMask = PhysicsCategory.enemyArrow
+        arrow.physicsBody?.contactTestBitMask = PhysicsCategory.enemy | PhysicsCategory.ground
         
         gameLayer.addChild(arrow)
         

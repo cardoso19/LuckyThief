@@ -8,98 +8,86 @@
 
 import SpriteKit
 
-class LiveObject: SKSpriteNode {
+open class LiveObject: SKSpriteNode {
     
-    // MARK: - Variable
-    private var totalLife: Float
-    private var life: Float
-    private var attack: Float
-    private var attackSpeed: Float
-    private var movimentSpeed: CGVector
-    private let lifeLabel: SKLabelNode
+    // MARK: - Variables
+    private(set) var life: Int
+    private(set) var attack: Int
+
+    private lazy var lifeLabel: SKLabelNode = {
+        let label = SKLabelNode(fontNamed: "DisposableDroid BB")
+        label.horizontalAlignmentMode = .center
+        label.fontSize = 12
+        #if os(tvOS)
+        label.fontSize = 40
+        #endif
+        label.fontColor = .white
+        label.position = CGPoint(x: 0, y: size.height * 1/2)
+        label.zPosition = zPosition + 1
+        return label
+    }()
     
-    // MARK: - Life Cycle
-    init(texture: SKTexture?, size: CGSize, physicsBody: SKPhysicsBody, totalLife: Float, life: Float, attack: Float, attackSpeed: Float, movimentSpeed: CGVector, mass: CGFloat, affectedByGravity: Bool, allowsRotation: Bool, isDynamic: Bool) {
-        self.totalLife = totalLife
+    // MARK: - Init
+    init(textures: [AnimationTextures], size: CGSize, life: Int, attack: Int, mass: CGFloat, affectedByGravity: Bool, allowsRotation: Bool, isDynamic: Bool) {
         self.life = life
         self.attack = attack
-        self.attackSpeed = attackSpeed
-        self.movimentSpeed = movimentSpeed
-        self.lifeLabel = SKLabelNode(fontNamed: "DisposableDroid BB")
-        super.init(texture: texture, color: .clear, size: size)
-        definePhysicsBody(physicsBody)
+        super.init(texture: nil, color: .clear, size: size)
         configPhysicsBody(mass: mass,
                           affectedByGravity: affectedByGravity,
                           allowsRotation: allowsRotation,
                           isDynamic: isDynamic)
-        configLifeLabel()
+        setupViewHierarchy()
+        animateTextures(textures)
     }
     
     @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Physics
-    private func definePhysicsBody(_ physicsBody: SKPhysicsBody) {
-        self.physicsBody = physicsBody
-    }
-    
     private func configPhysicsBody(mass: CGFloat, affectedByGravity: Bool, allowsRotation: Bool, isDynamic: Bool) {
+        physicsBody = SKPhysicsBody(circleOfRadius: size.width * 1/2, center: CGPoint(x: 0, y: -size.height * 1/4))
         physicsBody?.affectedByGravity = affectedByGravity
         physicsBody?.mass = mass
-        
         physicsBody?.allowsRotation = allowsRotation
         physicsBody?.isDynamic = isDynamic
     }
-    
-    // MARK: - Definitions
-    public func receiveLifePoints(_ lifePoints: Float) {
-        life += lifePoints
-        setLifeLabel(value: life)
-        if life > totalLife {
-            totalLife = life
-        }
-        if life <= 0 {
-            theObjectIsDead()
-        }
-    }
-    
-    public func receiveAttackPoints(_ attackPoints: Float) {
-        attack += attackPoints
-    }
-    
-    public func receiveMovimentSpeedPoints(_ movimentSpeedPoints: CGVector) {
-        movimentSpeed.dx += movimentSpeedPoints.dx
-        movimentSpeed.dy += movimentSpeedPoints.dy
-    }
-    
-    public func receiveAttackSpeedPoints(_ attackSpeedPoints: Float) {
-        attackSpeed += attackSpeedPoints
-    }
-    
-    // MARK: - Life n Death
-    private func configLifeLabel() {
-        lifeLabel.horizontalAlignmentMode = .center
-        lifeLabel.fontSize = 12
-        #if os(tvOS)
-        lifeLabel.fontSize = 40
-        #endif
-        lifeLabel.fontColor = .white
-        lifeLabel.position = CGPoint(x: 0, y: size.height * 1/2)
-        lifeLabel.zPosition = zPosition + 1
-        lifeLabel.isHidden = true
+
+    private func setupViewHierarchy() {
         addChild(lifeLabel)
     }
     
-    private func setLifeLabel(value: Float) {
-        let text = String(format: "%d", arguments: value)
-        lifeLabel.text = text
-    }
-    
-    public func setLifeLabel(visible: Bool) {
-        lifeLabel.isHidden = !visible
+    private func setLifeLabel(value: Int) {
+        lifeLabel.text = String(format: "%d", value)
     }
 
-    public func theObjectIsDead() {}
+    public func theObjectIsDead() {
+        removeFromParent()
+    }
+
+    // MARK: - Animation
+    private func animateTextures(_ textures: [AnimationTextures]) {
+        textures.forEach { animation in
+            let skin = SKSpriteNode(texture: nil, color: .clear, size: size)
+            skin.zPosition = animation.zPosition
+
+            let animationAction = SKAction.animate(with: animation.textures, timePerFrame: 0.025)
+            let foreverAction = SKAction.repeatForever(animationAction)
+
+            self.addChild(skin)
+            skin.run(foreverAction)
+        }
+    }
+}
+
+// MARK: - Alive
+extension LiveObject: Alive {
+    public func add(lifePoints: Int) {
+        life += lifePoints
+        setLifeLabel(value: life)
+        guard life <= 0 else {
+            return
+        }
+        theObjectIsDead()
+    }
 }

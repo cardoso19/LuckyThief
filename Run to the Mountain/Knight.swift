@@ -16,15 +16,15 @@ final class Knight: LiveObject {
     private let movementSpeed = CGVector(dx: -200, dy: 0)
 #endif
     private var onPlayer = false
-
+    
     // MARK: - Init
     init(size: CGSize, life: Int, attack: Int) {
-        let horseTextures = AnimationCache.shared.fetchTextures(name: horseTextureName,
-                                                                numberOfFrames: 14,
-                                                                zPosition: playerZposition)
-        let knightTextures = AnimationCache.shared.fetchTextures(name: knightTextureName,
-                                                                 numberOfFrames: 14,
-                                                                 zPosition: playerZposition + 50)
+        let horseTextures = TextureCache.shared.fetchTextures(name: horseTextureName,
+                                                              numberOfFrames: 14,
+                                                              zPosition: playerZposition)
+        let knightTextures = TextureCache.shared.fetchTextures(name: knightTextureName,
+                                                               numberOfFrames: 14,
+                                                               zPosition: playerZposition + 50)
         super.init(textures: [horseTextures, knightTextures],
                    size: size,
                    life: life,

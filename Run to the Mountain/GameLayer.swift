@@ -23,6 +23,7 @@ final class GameLayer: SKNode {
         self.size = size
         self.objSize = CGSize(width: size.height * 1/3, height: size.height * 1/3)
         super.init()
+        ArrowPool.shared.createArrows(size: CGSize(width: objSize.width / 15, height: objSize.height / 4))
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -160,17 +161,12 @@ final class GameLayer: SKNode {
         guard Status.shared.statusJogo == .onGame else {
             return
         }
-
         enemies.forEach { enemy in
             enemy.searchForPlayer()
         }
 
-        enumerateChildNodes(withName: arrowName) { (node, _) in
-            guard let physicsBody = node.physicsBody else {
-                return
-            }
-            let angle = atan2(physicsBody.velocity.dy, physicsBody.velocity.dx) + CGFloat(Double.pi/2)
-            node.zRotation = angle
+        ArrowPool.shared.firedArrows.keys.forEach { arrow in
+            arrow.updateRotation()
         }
     }
 }

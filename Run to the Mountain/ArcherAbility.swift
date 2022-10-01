@@ -8,7 +8,19 @@
 
 import SpriteKit
 
-protocol ArcherAbility: SKNode {
-    var arrowTexture: SKTexture { get }
+protocol ArcherAbility: SKSpriteNode {
+    var arrowType: ArrowType { get }
+    var attack: Int { get }
     func shootArrow(with velocity: CGVector)
+}
+
+extension ArcherAbility {
+    func shootArrow(with velocity: CGVector) {
+        guard let gameLayer = self.parent else { return }
+        let arrow = ArrowPool.shared.getArrow()
+        arrow.position = position
+        gameLayer.addChild(arrow)
+        arrow.setType(arrowType, damage: attack)
+        arrow.prepareForShooting(impulse: velocity)
+    }
 }

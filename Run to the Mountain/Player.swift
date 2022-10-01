@@ -11,12 +11,12 @@ import SpriteKit
 final class Player: LiveObject {
     //MARK: - Init
     init(size: CGSize, life: Int, attack: Int) {
-        let horseTextures = AnimationCache.shared.fetchTextures(name: horseTextureName,
-                                                                numberOfFrames: 14,
-                                                                zPosition: playerZposition)
-        let playerTextures = AnimationCache.shared.fetchTextures(name: playerTextureName,
-                                                                numberOfFrames: 14,
-                                                                zPosition: playerZposition + 50)
+        let horseTextures = TextureCache.shared.fetchTextures(name: horseTextureName,
+                                                              numberOfFrames: 14,
+                                                              zPosition: playerZposition)
+        let playerTextures = TextureCache.shared.fetchTextures(name: playerTextureName,
+                                                               numberOfFrames: 14,
+                                                               zPosition: playerZposition + 50)
         super.init(textures: [horseTextures, playerTextures],
                    size: size,
                    life: life,
@@ -53,27 +53,7 @@ extension Player: Collidable {
 
 // MARK: - ArcherAbility
 extension Player: ArcherAbility {
-    var arrowTexture: SKTexture {
-        let texture = SKTexture(imageNamed: arrowTextureName)
-        texture.filteringMode = .nearest
-        return texture
-    }
-    
-    func shootArrow(with velocity: CGVector) {
-        guard let gameLayer = self.parent else { return }
-
-        let arrow = Arrow(texture: arrowTexture,
-                          size: CGSize(width: size.width / 15, height: size.height / 4),
-                          damage: attack)
-        arrow.position = CGPoint(x: self.position.x, y: self.position.y)
-
-        arrow.physicsBody?.categoryBitMask = PhysicsCategory.playerArrow
-        arrow.physicsBody?.collisionBitMask = PhysicsCategory.enemyArrow
-        arrow.physicsBody?.contactTestBitMask = PhysicsCategory.enemy | PhysicsCategory.ground
-        
-        gameLayer.addChild(arrow)
-        
-        arrow.physicsBody?.applyImpulse(velocity)
-        arrow.zRotation = atan2(velocity.dy, velocity.dx) + CGFloat(Double.pi/2)
+    var arrowType: ArrowType {
+        .player
     }
 }

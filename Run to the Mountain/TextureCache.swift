@@ -1,5 +1,5 @@
 //
-//  AnimationCache.swift
+//  TextureCache.swift
 //  LuckyThief
 //
 //  Created by Matheus Cardoso Kuhn on 30.09.22.
@@ -13,25 +13,34 @@ struct AnimationTextures {
     let textures: [SKTexture]
 }
 
-final class AnimationCache {
+final class TextureCache {
 
     // MARK: - Variables
-    static let shared = AnimationCache()
-    private var cache: [String: AnimationTextures]
+    static let shared = TextureCache()
+    private var animationCache: [String: AnimationTextures]
+    private var textureCache: [String: SKTexture]
     
     // MARK: - Init
     private init() {
-        cache = [:]
+        animationCache = [:]
+        textureCache = [:]
     }
 
-    // MARK: - Animation
+    // MARK: - Fetcher
+    func fetchTexture(name: String) -> SKTexture {
+        let texture = SKTexture(imageNamed: name)
+        texture.filteringMode = .nearest
+        textureCache[name] = texture
+        return texture
+    }
+
     func fetchTextures(name: String, numberOfFrames: Int, zPosition: CGFloat) -> AnimationTextures {
-        if let animationTextures = cache[name] {
+        if let animationTextures = animationCache[name] {
             return animationTextures
         } else {
             let animationTextures = AnimationTextures(zPosition: zPosition,
                                                       textures: createTextures(name: name, range: 0...numberOfFrames))
-            cache[name] = animationTextures
+            animationCache[name] = animationTextures
             return animationTextures
         }
     }

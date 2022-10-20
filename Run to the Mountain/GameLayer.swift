@@ -14,14 +14,11 @@ final class GameLayer: SKNode {
     private var touchStartPoint: CGPoint?
     private var player: Player!
     private let size: CGSize
-    private var objSize: CGSize
-    private lazy var spawnPosition = CGPoint(x: size.width + objSize.width * 1/8, y: size.height * 1/3)
     private var enemies: [Enemy] = []
     
     //MARK: - Init
     init(size: CGSize) {
         self.size = size
-        self.objSize = CGSize(width: size.height * 1/3, height: size.height * 1/3)
         super.init()
         ArrowPool.shared.createArrows(size: CGSize(width: objSize.width / 15, height: objSize.height / 4))
     }
@@ -43,7 +40,6 @@ final class GameLayer: SKNode {
     func restartGame() {
         removeAllChildren()
         removeAllActions()
-        
         startGame()
     }
     
@@ -65,9 +61,7 @@ final class GameLayer: SKNode {
     
     //MARK: - Creator
     func createPlayer() {
-        let player = Player(size: objSize, life: 100, attack: playerArrowDamage)
-        player.position = CGPoint(x: size.width * 1/8, y: size.height * 1/3)
-        self.player = player
+        self.player = NPCCreator.shared.createPlayer()
         addChild(player)
     }
     
@@ -114,8 +108,6 @@ final class GameLayer: SKNode {
         
         Status.shared.setEnemiesAlive(createdEnemies: knightCount + archerKnightCount)
         Status.shared.increaseWaveCount()
-        print("Enemies Alive: \(Status.shared.currentEnemiesAlive())")
-        print("Wave: \(Status.shared.currentWave())")
     }
     
     //MARK: - Touchs

@@ -58,6 +58,8 @@
 		C5B358E528E73D360004B31F /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B358E428E73D360004B31F /* Enemy.swift */; };
 		C5B358E728E8E2830004B31F /* ArrowPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B358E628E8E2830004B31F /* ArrowPool.swift */; };
 		C5B358E928E8E78F0004B31F /* CGFloat+Calculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B358E828E8E78F0004B31F /* CGFloat+Calculations.swift */; };
+		C5B358EB28E99A040004B31F /* ObjectCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B358EA28E99A040004B31F /* ObjectCreator.swift */; };
+		C5B358ED28EB46DC0004B31F /* WaveCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B358EC28EB46DC0004B31F /* WaveCreator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +102,8 @@
 		C5B358E428E73D360004B31F /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
 		C5B358E628E8E2830004B31F /* ArrowPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowPool.swift; sourceTree = "<group>"; };
 		C5B358E828E8E78F0004B31F /* CGFloat+Calculations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Calculations.swift"; sourceTree = "<group>"; };
+		C5B358EA28E99A040004B31F /* ObjectCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCreator.swift; sourceTree = "<group>"; };
+		C5B358EC28EB46DC0004B31F /* WaveCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveCreator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,7 +228,9 @@
 			children = (
 				C5B358E628E8E2830004B31F /* ArrowPool.swift */,
 				C5B358E828E8E78F0004B31F /* CGFloat+Calculations.swift */,
+				C5B358EA28E99A040004B31F /* ObjectCreator.swift */,
 				C5B358E228E726550004B31F /* TextureCache.swift */,
+				C5B358EC28EB46DC0004B31F /* WaveCreator.swift */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -372,6 +378,7 @@
 				AF16D8821CFF59A800E1F2B1 /* Arrow.swift in Sources */,
 				C5B358E928E8E78F0004B31F /* CGFloat+Calculations.swift in Sources */,
 				C5B358E328E726550004B31F /* TextureCache.swift in Sources */,
+				C5B358EB28E99A040004B31F /* ObjectCreator.swift in Sources */,
 				AFD4882F1CEA3F6A00C482A1 /* GameViewController.swift in Sources */,
 				2FB1E7042384EC5000BB785A /* LiveObject.swift in Sources */,
 				2FB1E6FE2384D73500BB785A /* Collidable.swift in Sources */,
@@ -386,6 +393,7 @@
 				AFF2E2351CF38DE70071F832 /* ArcherKnight.swift in Sources */,
 				C5B358E728E8E2830004B31F /* ArrowPool.swift in Sources */,
 				AF08DE051D05E62700908CCA /* BackgroundLayer.swift in Sources */,
+				C5B358ED28EB46DC0004B31F /* WaveCreator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

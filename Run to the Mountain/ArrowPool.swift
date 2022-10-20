@@ -9,26 +9,26 @@
 import Foundation
 
 final class ArrowPool {
-
     // MARK: - Variables
     private var avaialbleArrows: [Arrow] = []
-    var firedArrows: [Arrow: Int] = [:]
-    private var arrowSize: CGSize!
-    static let shared = ArrowPool()
+    private(set) var firedArrows: [Arrow: Int] = [:]
+    private var objectCreator: ObjectCreator
 
     // MARK: - Init
-    private init() {}
+    init(objectCreator: ObjectCreator) {
+        self.objectCreator = objectCreator
+        createInitialArrows()
+    }
 
     // MARK: - Pool
-    func createArrows(size: CGSize) {
-        arrowSize = size
-        (0...15).forEach { _ in avaialbleArrows.append(Arrow(size: size)) }
+    func createInitialArrows() {
+        (0...15).forEach { _ in avaialbleArrows.append(objectCreator.createArrow()) }
     }
 
     func getArrow() -> Arrow {
         let arrow: Arrow
         if avaialbleArrows.isEmpty {
-            arrow = Arrow(size: arrowSize)
+            arrow = objectCreator.createArrow()
         } else {
             arrow = avaialbleArrows.removeFirst()
             arrow.removeFromParent()
